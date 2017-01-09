@@ -4,6 +4,8 @@ Demo Mode
 Control Android's Demo Mode from your app.
 
 Puts the Demo Mode controls into an understandable API to use for debugging or in screenshot apps.
+<br/>Sending Demo Mode broadcasts is as easy as `sendBroadcast(new NotificationsBuilder().visible(false).build())`.
+<br/>Get a [`DemoModeInitializer`](demomode/src/main/java/com/nightlynexus/demomode/DemoModeInitializer.java) via `DemoMode.initializer(Context)` to handle granting permissions from an app.
 
 ![](images/example.jpg)
 
