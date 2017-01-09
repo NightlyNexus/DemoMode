@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="label_application">Demo Mode Sample</string>
+  <string name="no_op">This feature is only for Mashmallow and above</string>
+  <string name="grant_permissions">Grant Permissions</string>
+  <string name="enter">Enter Demo Mode</string>
+  <string name="exit">Exit Demo Mode</string>
+  <string name="su_not_found">Device may not be rooted. Grant permissions via adb.</string>
+  <string name="grant_permissions_failure">Denied superuser access. Grant permissions via adb.</string>
+  <string name="grant_permissions_success">Demo Mode Permissions Granted!</string>
+</resources>

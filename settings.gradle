@@ -1,1 +1,1 @@
-include ':demomode'
+include ':demomode', ':demomode-sample'

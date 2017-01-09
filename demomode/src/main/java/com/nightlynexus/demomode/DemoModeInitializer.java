@@ -44,6 +44,7 @@ public interface DemoModeInitializer {
    * Demo Mode has to be enabled first before being able to be toggled.
    * This call will attempt to use "su" to grant the WRITE_SECURE_SETTINGS permission to write the
    * setting, if need be. Calls to "su" are blocking.
+   * Remember to declare the android.permission.WRITE_SECURE_SETTINGS permission in the manifest.
    */
   GrantPermissionResult setDemoModeSetting(DemoModeSetting setting);
 
@@ -55,6 +56,7 @@ public interface DemoModeInitializer {
   /**
    * Grants the DUMP permission that is required for the Demo Mode broadcasts to have an effect,
    * using a call to "su." Calls to "su" are blocking.
+   * Remember to declare the android.permission.DUMP permission in the manifest.
    */
   GrantPermissionResult grantBroadcastPermission();
 }
