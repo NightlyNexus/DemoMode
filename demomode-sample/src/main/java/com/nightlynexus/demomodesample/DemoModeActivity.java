@@ -1,5 +1,6 @@
 package com.nightlynexus.demomodesample;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,9 +21,11 @@ import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.ENAB
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.FAILURE;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SUCCESS;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SU_NOT_FOUND;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 public final class DemoModeActivity extends Activity {
-  @Override protected void onCreate(Bundle savedInstanceState) {
+  @SuppressLint("NewApi") @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.demo_mode);
     View grantPermissions = findViewById(R.id.grant_permissions);
@@ -48,14 +51,14 @@ public final class DemoModeActivity extends Activity {
         grantWriteSettingsAndDumpPermissions(demoModeInitializer, new Runnable() {
           @Override public void run() {
             sendBroadcast(new ClockBuilder().setTimeInHoursAndMinutes("1200").build());
-            sendBroadcast(new SystemIconsBuilder().cast(true)
+            sendBroadcast(new SystemIconsBuilder().cast(TRUE)
                 .zen(SystemIconsBuilder.ZenMode.IMPORTANT)
-                .mute(true)
-                .speakerphone(true)
-                .tty(true)
+                .mute(TRUE)
+                .speakerphone(TRUE)
+                .tty(TRUE)
                 .build());
-            sendBroadcast(new BatteryBuilder().level(100).plugged(false).build());
-            sendBroadcast(new WifiBuilder().wifi(true, 0).build());
+            sendBroadcast(new BatteryBuilder().level(100).plugged(FALSE).build());
+            sendBroadcast(new WifiBuilder().wifi(TRUE, 0).build());
             sendBroadcast(
                 new NetworkBuilder().mobile(true, NetworkBuilder.Datatype.LTE_PLUS, 0, 4).build());
           }
