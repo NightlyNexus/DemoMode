@@ -5,8 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 public final class WifiBuilder {
+  private String fully;
   private String wifi;
   private String level;
+
+  public WifiBuilder fully(@Nullable Boolean fully) {
+    this.fully = fully == null ? null : fully ? "true" : "false";
+    return this;
+  }
 
   /** -1 level for wifi state disconnected. **/
   public WifiBuilder wifi(@Nullable Boolean wifi, @Nullable Integer level) {
@@ -41,7 +47,8 @@ public final class WifiBuilder {
   }
 
   public Intent build() {
-    Bundle extras = new Bundle(2);
+    Bundle extras = new Bundle(3);
+    extras.putString("fully", fully);
     extras.putString("wifi", wifi);
     extras.putString("level", level);
     return DemoMode.build("network", extras);
