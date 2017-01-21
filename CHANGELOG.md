@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 0.1.1 *(2016-01-14)*
+Version 0.1.1 *(2017-01-14)*
 ----------------------------
 
  * New: Add wifi "fully" connected parameter.
