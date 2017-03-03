@@ -12,8 +12,10 @@
 
   <application
       android:allowBackup="true"
+      android:fullBackupContent="true"
       android:label="@string/label_application"
-      android:supportsRtl="true">
+      android:supportsRtl="true"
+      tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon">
 
     <activity android:name=".DemoModeActivity">
       <intent-filter>

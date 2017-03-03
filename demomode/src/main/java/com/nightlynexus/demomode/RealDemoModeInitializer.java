@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
@@ -24,6 +25,7 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
   private static final String PERMISSION_WRITE_SECURE_SETTINGS =
       "android.permission.WRITE_SECURE_SETTINGS";
   private static final String PERMISSION_DUMP = "android.permission.DUMP";
+  private static final Charset UTF_8 = Charset.forName("UTF-8");
 
   private final Context context;
 
@@ -112,7 +114,7 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
             .append(permission)
             .toString();
     try {
-      outputStream.write(command.getBytes());
+      outputStream.write(command.getBytes(UTF_8));
       outputStream.flush();
       outputStream.close();
       process.waitFor();
