@@ -83,9 +83,8 @@ public final class NetworkBuilder {
     return this;
   }
 
-  public NetworkBuilder carriernetworkchange(@Nullable Boolean carriernetworkchange) {
-    this.carriernetworkchange =
-        carriernetworkchange == null ? null : carriernetworkchange ? "show" : "";
+  public NetworkBuilder carrierNetworkChange(@Nullable Boolean carrierNetworkChange) {
+    carriernetworkchange = carrierNetworkChange == null ? null : carrierNetworkChange ? "show" : "";
     return this;
   }
 
