@@ -46,7 +46,7 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
     return null;
   }
 
-  @TargetApi(JELLY_BEAN_MR1) @Override public DemoModeSetting getDemoModeSetting() {
+  @Override public DemoModeSetting getDemoModeSetting() {
     ContentResolver resolver = context.getContentResolver();
     String setting = Settings.Global.getString(resolver, SYSTEMUI_DEMO_ALLOWED);
     if (setting == null) {
@@ -55,7 +55,7 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
     return setting.equals("0") ? DISABLED : ENABLED;
   }
 
-  @TargetApi(JELLY_BEAN_MR1) @Override
+  @Override
   public GrantPermissionResult setDemoModeSetting(DemoModeSetting setting) {
     if (setting == getDemoModeSetting()) {
       return SUCCESS;
