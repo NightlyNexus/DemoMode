@@ -31,7 +31,7 @@ Download
 Gradle:
 
 ```groovy
-compile 'com.nightlynexus.demomode:demomode:0.1.1'
+compile 'com.nightlynexus.demomode:demomode:0.1.2'
 ```
 
 License
