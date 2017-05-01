@@ -5,7 +5,7 @@ Version 0.1.2 *(2017-05-01)*
 ----------------------------
 
  * Breaking API change: Require SDK version 17+.
- * Breaking API change: Fix name of NetworkBuilder.carrierNetworkChange
+ * Breaking API change: Fix name of NetworkBuilder.carrierNetworkChange.
 
 Version 0.1.1 *(2017-01-14)*
 ----------------------------
