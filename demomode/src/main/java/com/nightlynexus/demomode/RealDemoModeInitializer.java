@@ -1,16 +1,18 @@
 package com.nightlynexus.demomode;
 
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.provider.Settings;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static android.os.Build.VERSION.SDK_INT;
 import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.DISABLED;
 import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.DISABLED_NEVER_SET;
 import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.ENABLED;
@@ -18,6 +20,7 @@ import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResul
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SUCCESS;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SU_NOT_FOUND;
 
+@RequiresApi(23)
 final class RealDemoModeInitializer implements DemoModeInitializer {
   private static final String SYSTEMUI_DEMO_ALLOWED = "sysui_demo_allowed";
   private static final String PERMISSION_WRITE_SECURE_SETTINGS =
@@ -90,7 +93,7 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
     return grantPermission(PERMISSION_DUMP);
   }
 
-  @TargetApi(23) private boolean hasPermission(String permission) {
+  @RequiresApi(23) private boolean hasPermission(String permission) {
     return context.checkSelfPermission(permission) == PERMISSION_GRANTED;
   }
 
@@ -123,7 +126,14 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
     return hasPermission(permission) ? SUCCESS : FAILURE;
   }
 
+  @SuppressWarnings("deprecation")
   private boolean hasHandler(Intent intent) {
-    return !context.getPackageManager().queryIntentActivities(intent, 0).isEmpty();
+    PackageManager packageManager = context.getPackageManager();
+    if (SDK_INT > 33) {
+      return !packageManager.queryIntentActivities(
+          intent, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL)).isEmpty();
+    }
+    return !packageManager.queryIntentActivities(
+        intent, PackageManager.MATCH_ALL).isEmpty();
   }
 }
