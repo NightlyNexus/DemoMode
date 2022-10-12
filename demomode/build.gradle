@@ -20,6 +20,7 @@ android {
 
 repositories {
   google()
+  mavenCentral()
 }
 
 buildscript {
@@ -34,4 +35,5 @@ buildscript {
 
 dependencies {
   api 'androidx.annotation:annotation:1.5.0'
+  compileOnly 'org.jetbrains.kotlin:kotlin-stdlib:1.7.10'
 }
