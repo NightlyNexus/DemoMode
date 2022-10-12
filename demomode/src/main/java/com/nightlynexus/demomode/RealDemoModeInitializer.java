@@ -5,14 +5,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static android.os.Build.VERSION_CODES.JELLY_BEAN_MR1;
-import static android.os.Build.VERSION_CODES.M;
 import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.DISABLED;
 import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.DISABLED_NEVER_SET;
 import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.ENABLED;
@@ -33,7 +31,8 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
     this.context = context;
   }
 
-  @Nullable @Override public Intent demoModeScreenIntent() {
+  @Nullable
+  @Override public Intent demoModeScreenIntent() {
     Intent demoMode = new Intent("com.android.settings.action.DEMO_MODE");
     if (hasHandler(demoMode)) {
       return demoMode;
@@ -91,7 +90,7 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
     return grantPermission(PERMISSION_DUMP);
   }
 
-  @TargetApi(M) private boolean hasPermission(String permission) {
+  @TargetApi(23) private boolean hasPermission(String permission) {
     return context.checkSelfPermission(permission) == PERMISSION_GRANTED;
   }
 

@@ -16,7 +16,6 @@ import com.nightlynexus.demomode.SystemIconsBuilder;
 import com.nightlynexus.demomode.WifiBuilder;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.M;
 import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.ENABLED;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.FAILURE;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SUCCESS;
@@ -31,7 +30,7 @@ public final class DemoModeActivity extends Activity {
     View grantPermissions = findViewById(R.id.grant_permissions);
     View enter = findViewById(R.id.enter);
     View exit = findViewById(R.id.exit);
-    if (SDK_INT < M) {
+    if (SDK_INT < 23) {
       Toast.makeText(this, R.string.no_op, Toast.LENGTH_LONG).show();
       return;
     }

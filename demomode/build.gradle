@@ -1,10 +1,8 @@
 apply plugin: 'com.android.library'
-apply plugin: 'net.ltgt.errorprone'
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+apply plugin: "com.vanniktech.maven.publish"
 
 android {
-  compileSdkVersion 25
-  buildToolsVersion "25.0.2"
+  compileSdkVersion 33
 
   defaultConfig {
     minSdkVersion 17
@@ -21,9 +19,19 @@ android {
 }
 
 repositories {
-  mavenCentral()
+  google()
+}
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'com.vanniktech:gradle-maven-publish-plugin:0.22.0'
+  }
 }
 
 dependencies {
-  compile 'com.android.support:support-annotations:25.3.1'
+  api 'androidx.annotation:annotation:1.5.0'
 }

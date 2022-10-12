@@ -4,7 +4,6 @@
 
 # Gradle
 .gradle
-gradlew.bat
 build
 local.properties
 

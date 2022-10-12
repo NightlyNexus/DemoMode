@@ -3,11 +3,10 @@ package com.nightlynexus.demomode;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static android.os.Build.VERSION_CODES.M;
 
 public final class DemoMode {
   private static final String ACTION_DEMO_MODE = "com.android.systemui.demo";
@@ -16,8 +15,8 @@ public final class DemoMode {
    * Creates a DemoModeInitializer instance for help granting permissions to use Demo Mode.
    * Requires API level 23 or higher.
    */
-  @RequiresApi(M) public static DemoModeInitializer initializer(Context context) {
-    if (SDK_INT < M) {
+  @RequiresApi(23) public static DemoModeInitializer initializer(Context context) {
+    if (SDK_INT < 23) {
       throw new AssertionError("Demo mode not available before Marshmallow.");
     }
     return new RealDemoModeInitializer(context);

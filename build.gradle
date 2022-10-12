@@ -1,11 +1,10 @@
 buildscript {
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.2.3'
-    classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.10'
+    classpath 'com.android.tools.build:gradle:7.3.0'
   }
 
   repositories {
-    jcenter()
+    google()
     maven { url 'https://plugins.gradle.org/m2/' }
   }
 }
