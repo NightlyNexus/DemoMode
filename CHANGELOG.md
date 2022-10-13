@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.2.0 *(2022-10-13)*
+----------------------------
+
+* Lots of breaking API changes.
+* Updated to the latest Demo Mode features. Added runtime SDK version checks for many of the additions, but no promises: some features might fail silently on old Android versions. 
+
 Version 0.1.2 *(2017-05-01)*
 ----------------------------
 
