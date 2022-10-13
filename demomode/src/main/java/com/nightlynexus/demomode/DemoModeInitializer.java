@@ -15,8 +15,8 @@ public interface DemoModeInitializer {
 
   /**
    * The result of an attempt to grant a system permission.
-   * FAILURE is normally the result of a user denying "su" access to the process.
-   * SU_NOT_FOUND means that the "su" binary was not found; the user may not be rooted and can not
+   * <p>FAILURE is normally the result of a user denying "su" access to the process.
+   * <p>SU_NOT_FOUND means that the "su" binary was not found; the user may not be rooted and cannot
    * grant the app the permission from the device.
    */
   enum GrantPermissionResult {
@@ -26,37 +26,50 @@ public interface DemoModeInitializer {
   }
 
   /**
-   * Get the Intent for going to the system Demo Mode screen. This is useful as an alternative to
-   * #setDemoModeSetting (requiring the WRITE_SECURE_SETTINGS permission) if the Demo Mode setting
-   * is disabled.
+   * Get the Intent for going to the Demo Mode screen in the system settings. This is useful as an
+   * alternative to {@link #setDemoModeSetting} (which requires the WRITE_SECURE_SETTINGS
+   * permission) if the Demo Mode setting is disabled.
    *
-   * @return The Intent for going to the Demo Mode screen or null if no known Intent exists.
+   * @return The Intent for going to the Demo Mode screen in the system settings or null if no known
+   * Intent exists.
    */
-  @Nullable Intent demoModeScreenIntent();
+  @Nullable Intent demoModeSystemSettingsScreenIntent();
 
   /**
-   * Gets the current setting for Demo Mode in system settings.
+   * Gets the current setting for Demo Mode in the system settings. The Demo Mode setting must be
+   * enabled before Demo Mode can be turned on.
    */
   DemoModeSetting getDemoModeSetting();
 
   /**
-   * Sets the Demo Mode setting in system settings.
-   * Demo Mode has to be enabled first before being able to be toggled.
-   * This call will attempt to use "su" to grant the WRITE_SECURE_SETTINGS permission to write the
-   * setting, if need be. Calls to "su" are blocking.
-   * Remember to declare the android.permission.WRITE_SECURE_SETTINGS permission in the manifest.
+   * Sets the Demo Mode setting in the system settings. The Demo Mode setting must be enabled before
+   * Demo Mode can be turned on.
    */
-  GrantPermissionResult setDemoModeSetting(DemoModeSetting setting);
+  void setDemoModeSetting(DemoModeSetting setting);
 
   /**
-   * Check for the DUMP permission that is required for the Demo Mode broadcasts to have an effect.
+   * Check for the android.permission.WRITE_SECURE_SETTINGS permission that is required to toggle
+   * Demo Mode on and off in the system settings.
    */
-  boolean hasBroadcastPermission();
+  boolean hasWriteSecureSettingsPermission();
 
   /**
-   * Grants the DUMP permission that is required for the Demo Mode broadcasts to have an effect,
-   * using a call to "su." Calls to "su" are blocking.
-   * Remember to declare the android.permission.DUMP permission in the manifest.
+   * Attempts to grants the android.permission.WRITE_SECURE_SETTINGS permission that is required to
+   * toggle Demo Mode on and off in the system settings, using a blocking call to "su."
+   * <p>Remember to declare the android.permission.WRITE_SECURE_SETTINGS permission in the manifest.
    */
-  GrantPermissionResult grantBroadcastPermission();
+  GrantPermissionResult grantWriteSecureSettingsPermission();
+
+  /**
+   * Check for the android.permission.DUMP permission that is required for the Demo Mode broadcasts
+   * to have an effect.
+   */
+  boolean hasDumpPermission();
+
+  /**
+   * Attempts to grant the android.permission.DUMP permission that is required for the Demo Mode
+   * broadcasts to have an effect, using a blocking call to "su."
+   * <p>Remember to declare the android.permission.DUMP permission in the manifest.
+   */
+  GrantPermissionResult grantDumpPermission();
 }

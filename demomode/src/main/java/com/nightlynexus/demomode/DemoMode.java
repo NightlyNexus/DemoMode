@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi;
 import static android.os.Build.VERSION.SDK_INT;
 
 public final class DemoMode {
-  private static final String ACTION_DEMO_MODE = "com.android.systemui.demo";
+  static final String ACTION_DEMO_MODE = "com.android.systemui.demo";
 
   /**
    * Creates a DemoModeInitializer instance for help granting permissions to use Demo Mode.
@@ -17,7 +17,7 @@ public final class DemoMode {
    */
   @RequiresApi(23) public static DemoModeInitializer initializer(Context context) {
     if (SDK_INT < 23) {
-      throw new AssertionError("Demo mode not available before Marshmallow.");
+      throw new IllegalStateException("Demo mode not available before Marshmallow.");
     }
     return new RealDemoModeInitializer(context);
   }
