@@ -78,7 +78,7 @@ public final class SystemIconsBuilder {
   public SystemIconsBuilder bluetooth(@Nullable BluetoothMode bluetooth) {
     if (bluetooth == BluetoothMode.DISCONNECTED) {
       if (SDK_INT >= 30) {
-        throw new IllegalArgumentException(zen + " is unsupported on SDK levels >=30.");
+        throw new IllegalArgumentException(bluetooth + " is unsupported on SDK levels >=30.");
       }
     }
     this.bluetooth = bluetooth == null ? null : bluetooth.name;
