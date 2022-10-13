@@ -2,7 +2,9 @@ package com.nightlynexus.demomode;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.annotation.RequiresApi;
 
+@RequiresApi(23)
 public final class ClockBuilder {
   private String millis;
   private String hhmm;

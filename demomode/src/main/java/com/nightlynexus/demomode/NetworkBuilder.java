@@ -3,7 +3,9 @@ package com.nightlynexus.demomode;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
+@RequiresApi(23)
 public final class NetworkBuilder {
   public enum Datatype {
     ONE_X("1x"),
