@@ -8,17 +8,17 @@ import android.provider.Settings;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
+import androidx.annotation.WorkerThread;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.os.Build.VERSION.SDK_INT;
-import static com.nightlynexus.demomode.DemoModePermissions.DemoModeSystemSetting.DISABLED;
-import static com.nightlynexus.demomode.DemoModePermissions.DemoModeSystemSetting.DISABLED_NEVER_SET;
-import static com.nightlynexus.demomode.DemoModePermissions.DemoModeSystemSetting.ENABLED;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.FAILURE;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.SUCCESS;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.SU_NOT_FOUND;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @RequiresApi(23)
@@ -27,15 +27,6 @@ public final class DemoModePermissions {
   static final String PERMISSION_WRITE_SECURE_SETTINGS =
       "android.permission.WRITE_SECURE_SETTINGS";
   static final String PERMISSION_DUMP = "android.permission.DUMP";
-
-  /**
-   * The setting in the system settings for enabling Demo Mode.
-   */
-  public enum DemoModeSystemSetting {
-    ENABLED,
-    DISABLED,
-    DISABLED_NEVER_SET
-  }
 
   /**
    * The result of an attempt to grant a system permission.
@@ -73,38 +64,30 @@ public final class DemoModePermissions {
   /**
    * Get the current setting for Demo Mode in the system settings. The Demo Mode setting must be
    * enabled before Demo Mode can be turned on with a broadcast.
+   *
+   * @return null if and only if the demo mode system setting has never been set (effectively
+   * disabled).
    */
-  public static DemoModeSystemSetting getDemoModeSystemSetting(Context context) {
+  @WorkerThread
+  @Nullable public static Boolean isDemoModeSystemSettingEnabled(Context context) {
     ContentResolver resolver = context.getContentResolver();
     String setting = Settings.Global.getString(resolver, SYSTEMUI_DEMO_ALLOWED);
-    if (setting == null) {
-      return DISABLED_NEVER_SET;
-    }
-    return setting.equals("0") ? DISABLED : ENABLED;
+    return setting == null ? null : setting.equals("0") ? FALSE : TRUE;
   }
 
   /**
    * Set the Demo Mode setting in the system settings. The Demo Mode setting must be enabled before
    * Demo Mode can be turned on.
+   *
+   * @param enabled null to set the demo mode system setting in its unset state (effectively
+   *                disabled).
    */
   @RequiresPermission(PERMISSION_WRITE_SECURE_SETTINGS)
-  public static void setDemoModeSetting(Context context, DemoModeSystemSetting setting) {
-    String value;
-    switch (setting) {
-      case ENABLED:
-        value = "1";
-        break;
-      case DISABLED:
-        value = "0";
-        break;
-      case DISABLED_NEVER_SET:
-        value = null;
-        break;
-      default:
-        throw new AssertionError("No DemoModeSetting type: " + setting);
-    }
+  @WorkerThread
+  public static void setDemoModeSetting(Context context, @Nullable Boolean enabled) {
     ContentResolver resolver = context.getContentResolver();
-    Settings.Global.putString(resolver, SYSTEMUI_DEMO_ALLOWED, value);
+    Settings.Global.putString(resolver, SYSTEMUI_DEMO_ALLOWED,
+        enabled == null ? null : enabled ? "1" : "0");
   }
 
   /**
@@ -120,6 +103,7 @@ public final class DemoModePermissions {
    * toggle Demo Mode on and off in the system settings, using a blocking call to "su."
    * <p>Remember to declare the android.permission.WRITE_SECURE_SETTINGS permission in the manifest.
    */
+  @WorkerThread
   public static GrantPermissionResult grantWriteSecureSettingsPermission(Context context) {
     return grantPermission(context, PERMISSION_WRITE_SECURE_SETTINGS);
   }
@@ -137,6 +121,7 @@ public final class DemoModePermissions {
    * broadcasts to have an effect, using a blocking call to "su."
    * <p>Remember to declare the android.permission.DUMP permission in the manifest.
    */
+  @WorkerThread
   public static GrantPermissionResult grantDumpPermission(Context context) {
     return grantPermission(context, PERMISSION_DUMP);
   }
@@ -145,6 +130,7 @@ public final class DemoModePermissions {
     return context.checkSelfPermission(permission) == PERMISSION_GRANTED;
   }
 
+  @WorkerThread
   static GrantPermissionResult grantPermission(Context context, String permission) {
     if (hasPermission(context, permission)) {
       return SUCCESS;
