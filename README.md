@@ -3,7 +3,7 @@ Demo Mode
 
 Control Android’s Demo Mode from your app.
 
-This library wraps the Demo Mode controls in an understandable API to use for debugging or screenshots.
+This library wraps Android’s Demo Mode controls in an understandable API to use for debugging or screenshots.
 <br/>Sending Demo Mode broadcasts is as easy as
 <br/>`sendBroadcast(new NotificationsBuilder().visible(false).build())`.
 <br/>
