@@ -58,6 +58,10 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
 
   @RequiresPermission(PERMISSION_WRITE_SECURE_SETTINGS)
   @Override public void setDemoModeSetting(DemoModeSetting setting) {
+    if (!hasPermission(PERMISSION_WRITE_SECURE_SETTINGS)) {
+      throw new SecurityException("Permission denial: writing to settings requires:" +
+          "android.permission.WRITE_SECURE_SETTINGS");
+    }
     if (setting == getDemoModeSetting()) {
       return;
     }
