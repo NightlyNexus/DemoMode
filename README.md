@@ -5,7 +5,7 @@ Control Android’s Demo Mode from your app.
 
 This library wraps Android’s Demo Mode controls in an understandable API for debugging or screenshots.
 <br/>Sending Demo Mode broadcasts is as easy as
-<br/>`sendBroadcast(new NotificationsBuilder().visible(false).build())`.
+<br/>`sendBroadcast(new NotificationsBuilder().visible(false).build())`
 <br/>
 <br/>
 ![](images/example.jpg)
@@ -15,7 +15,7 @@ Why?
 
 Android (Marshmallow and above) has a public SystemUI Tuner. Users can find the SystemUI Tuner in the device settings app. Developers can send the corresponding SystemUI Tuner broadcasts from the adb shell, but applications need the [system-signed DUMP permission](https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/core/res/AndroidManifest.xml#3758) to send these broadcasts.
 
-The [documentation on Demo Mode](https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/docs/demo_mode.md) is unclear what extras should be sent with the broadcasts and is wrong in some places. (For example, the ["sync" and "eri" icons](https://android.googlesource.com/platform/frameworks/base/+/b8f0e69ef087798b46447a7352461a5120186646/packages/SystemUI/src/com/android/systemui/tuner/DemoModeFragment.java#42) cannot currently be changed by the [broadcasts](https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/phone/DemoStatusIcons.java#124).)
+The [documentation on Demo Mode](https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/docs/demo_mode.md) is unclear about what extras should be sent with the broadcasts and is incorrect in some places. (For example, the ["sync" and "eri" icons](https://android.googlesource.com/platform/frameworks/base/+/b8f0e69ef087798b46447a7352461a5120186646/packages/SystemUI/src/com/android/systemui/tuner/DemoModeFragment.java#42) cannot currently be changed via [broadcasts](https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/phone/DemoStatusIcons.java#124).)
 
 This library makes Demo Mode easier to use in Android applications by handling permissions and wrapping the implementation of creating the broadcast Intents in an understandable and working API.
 
@@ -29,7 +29,7 @@ Download
 Gradle:
 
 ```groovy
-compile 'com.nightlynexus.demomode:demomode:0.1.2'
+implementation 'com.nightlynexus.demomode:demomode:0.1.2'
 ```
 
 License
