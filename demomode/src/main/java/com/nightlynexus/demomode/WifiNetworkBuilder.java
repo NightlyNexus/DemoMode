@@ -1,23 +1,20 @@
 package com.nightlynexus.demomode;
 
 import android.content.Intent;
-import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+// https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
-public final class WifiBuilder {
-  private String fully;
-  private String wifi;
-  private String level;
-
-  public WifiBuilder fully(@Nullable Boolean fully) {
-    this.fully = fully == null ? null : fully ? "true" : "false";
-    return this;
-  }
+public final class WifiNetworkBuilder extends NetworkBuilder {
+  String wifi;
+  String level;
+  String activity;
+  String ssid;
 
   /** -1 level for wifi state disconnected. **/
-  public WifiBuilder wifi(@Nullable Boolean wifi, @Nullable Integer level) {
+  public WifiNetworkBuilder wifi(@Nullable Boolean wifi, @Nullable Integer level,
+      @Nullable DataActivity activity, @Nullable String ssid) {
     this.wifi = wifi == null ? null : wifi ? "show" : "";
     if (level == null) {
       this.level = null;
@@ -45,14 +42,16 @@ public final class WifiBuilder {
           throw new IllegalArgumentException("level must be [-1, 4] or null. Actual: " + level);
       }
     }
+    this.activity = activity == null ? null : activity.name;
+    this.ssid = ssid;
     return this;
   }
 
-  public Intent build() {
-    Bundle extras = new Bundle(3);
-    extras.putString("fully", fully);
-    extras.putString("wifi", wifi);
-    extras.putString("level", level);
-    return DemoMode.build("network", extras);
+  @Override public Intent build() {
+    return super.build()
+        .putExtra("wifi", wifi)
+        .putExtra("level", level)
+        .putExtra("activity", activity)
+        .putExtra("ssid", ssid);
   }
 }
