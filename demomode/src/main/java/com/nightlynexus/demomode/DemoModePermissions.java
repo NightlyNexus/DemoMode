@@ -31,7 +31,7 @@ public final class DemoModePermissions {
   /**
    * The setting in the system settings for enabling Demo Mode.
    */
-  public enum DemoModeSystemSetting { // TODO: name.
+  public enum DemoModeSystemSetting {
     ENABLED,
     DISABLED,
     DISABLED_NEVER_SET
