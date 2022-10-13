@@ -7,9 +7,9 @@ import android.content.pm.PackageManager;
 import android.provider.Settings;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.RequiresPermission;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.Charset;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.os.Build.VERSION.SDK_INT;
@@ -19,23 +19,22 @@ import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.ENAB
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.FAILURE;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SUCCESS;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SU_NOT_FOUND;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @RequiresApi(23)
 final class RealDemoModeInitializer implements DemoModeInitializer {
-  private static final String SYSTEMUI_DEMO_ALLOWED = "sysui_demo_allowed";
-  private static final String PERMISSION_WRITE_SECURE_SETTINGS =
+  static final String SYSTEMUI_DEMO_ALLOWED = "sysui_demo_allowed";
+  static final String PERMISSION_WRITE_SECURE_SETTINGS =
       "android.permission.WRITE_SECURE_SETTINGS";
-  private static final String PERMISSION_DUMP = "android.permission.DUMP";
-  private static final Charset UTF_8 = Charset.forName("UTF-8");
+  static final String PERMISSION_DUMP = "android.permission.DUMP";
 
-  private final Context context;
+  final Context context;
 
   RealDemoModeInitializer(Context context) {
     this.context = context;
   }
 
-  @Nullable
-  @Override public Intent demoModeScreenIntent() {
+  @Nullable @Override public Intent demoModeSystemSettingsScreenIntent() {
     Intent demoMode = new Intent("com.android.settings.action.DEMO_MODE");
     if (hasHandler(demoMode)) {
       return demoMode;
@@ -57,14 +56,10 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
     return setting.equals("0") ? DISABLED : ENABLED;
   }
 
-  @Override
-  public GrantPermissionResult setDemoModeSetting(DemoModeSetting setting) {
+  @RequiresPermission(PERMISSION_WRITE_SECURE_SETTINGS)
+  @Override public void setDemoModeSetting(DemoModeSetting setting) {
     if (setting == getDemoModeSetting()) {
-      return SUCCESS;
-    }
-    GrantPermissionResult result = grantPermission(PERMISSION_WRITE_SECURE_SETTINGS);
-    if (result != SUCCESS) {
-      return result;
+      return;
     }
     String value;
     switch (setting) {
@@ -82,22 +77,29 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
     }
     ContentResolver resolver = context.getContentResolver();
     Settings.Global.putString(resolver, SYSTEMUI_DEMO_ALLOWED, value);
-    return SUCCESS;
   }
 
-  @Override public boolean hasBroadcastPermission() {
+  @Override public boolean hasWriteSecureSettingsPermission() {
+    return hasPermission(PERMISSION_WRITE_SECURE_SETTINGS);
+  }
+
+  @Override public GrantPermissionResult grantWriteSecureSettingsPermission() {
+    return grantPermission(PERMISSION_WRITE_SECURE_SETTINGS);
+  }
+
+  @Override public boolean hasDumpPermission() {
     return hasPermission(PERMISSION_DUMP);
   }
 
-  @Override public GrantPermissionResult grantBroadcastPermission() {
+  @Override public GrantPermissionResult grantDumpPermission() {
     return grantPermission(PERMISSION_DUMP);
   }
 
-  @RequiresApi(23) private boolean hasPermission(String permission) {
+  boolean hasPermission(String permission) {
     return context.checkSelfPermission(permission) == PERMISSION_GRANTED;
   }
 
-  private GrantPermissionResult grantPermission(String permission) {
+  GrantPermissionResult grantPermission(String permission) {
     if (hasPermission(permission)) {
       return SUCCESS;
     }
@@ -127,7 +129,7 @@ final class RealDemoModeInitializer implements DemoModeInitializer {
   }
 
   @SuppressWarnings("deprecation")
-  private boolean hasHandler(Intent intent) {
+  boolean hasHandler(Intent intent) {
     PackageManager packageManager = context.getPackageManager();
     if (SDK_INT > 33) {
       return !packageManager.queryIntentActivities(

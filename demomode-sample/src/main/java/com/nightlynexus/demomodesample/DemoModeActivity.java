@@ -16,8 +16,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
 import static com.nightlynexus.demomode.DemoModeInitializer.DemoModeSetting.ENABLED;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.FAILURE;
+import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SUCCESS;
 import static com.nightlynexus.demomode.DemoModeInitializer.GrantPermissionResult.SU_NOT_FOUND;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -30,73 +33,137 @@ public final class DemoModeActivity extends Activity {
     View enter = findViewById(R.id.enter);
     View exit = findViewById(R.id.exit);
     if (SDK_INT < 23) {
-      Toast.makeText(this, R.string.no_op, Toast.LENGTH_LONG).show();
+      Toast.makeText(this, R.string.no_op, LENGTH_LONG).show();
       return;
     }
+
     Executor suPermissionExecutor = Executors.newSingleThreadExecutor();
     DemoModeInitializer demoModeInitializer = DemoMode.initializer(this);
-    grantPermissions.setOnClickListener(v -> grantWriteSettingsAndDumpPermissions(
-        suPermissionExecutor, demoModeInitializer, () -> Toast.makeText(
-            DemoModeActivity.this, R.string.grant_permissions_success,
-            Toast.LENGTH_SHORT).show()));
-    enter.setOnClickListener(v -> grantWriteSettingsAndDumpPermissions(suPermissionExecutor,
-        demoModeInitializer, () -> {
-          sendBroadcast(new ClockBuilder().setTimeInHoursAndMinutes("1200").build());
-          sendBroadcast(new SystemIconsBuilder().cast(TRUE)
-              .zen(SystemIconsBuilder.ZenMode.IMPORTANT)
-              .mute(TRUE)
-              .speakerphone(TRUE)
-              .tty(TRUE)
-              .build());
-          sendBroadcast(new BatteryBuilder().level(100).plugged(FALSE).build());
-          sendBroadcast(new WifiBuilder().wifi(TRUE, 0).build());
-          sendBroadcast(
-              new NetworkBuilder().mobile(true, NetworkBuilder.Datatype.LTE_PLUS, 0, 4).build());
-        }));
-    exit.setOnClickListener(v -> grantDumpPermission(suPermissionExecutor, demoModeInitializer,
-        () -> sendBroadcast(DemoMode.buildExit())));
-  }
+    grantPermissions.setOnClickListener(v -> {
+      boolean hasWriteSystemSettings = demoModeInitializer.hasWriteSecureSettingsPermission();
+      boolean hasDump = demoModeInitializer.hasDumpPermission();
+      if (hasWriteSystemSettings && hasDump) {
+        grantPermissionsSuccess();
+      } else {
+        suPermissionExecutor.execute(() -> {
+          GrantPermissionResult writeSecureSettingsResult;
+          if (!hasWriteSystemSettings) {
+            writeSecureSettingsResult = demoModeInitializer.grantWriteSecureSettingsPermission();
+          } else {
+            writeSecureSettingsResult = SUCCESS;
+          }
+          GrantPermissionResult dumpResult;
+          if (!hasDump) {
+            dumpResult = demoModeInitializer.grantDumpPermission();
+          } else {
+            dumpResult = SUCCESS;
+          }
 
-  void grantWriteSettingsAndDumpPermissions(Executor suPermissionExecutor,
-      DemoModeInitializer demoModeInitializer, Runnable onSuccess) {
-    suPermissionExecutor.execute(() -> {
-      GrantPermissionResult demoModeSettingResult =
+          runOnUiThread(() -> {
+            if (writeSecureSettingsResult == SU_NOT_FOUND || dumpResult == SU_NOT_FOUND) {
+              Toast.makeText(DemoModeActivity.this, R.string.su_not_found, LENGTH_LONG).show();
+              return;
+            }
+            if (writeSecureSettingsResult == FAILURE || dumpResult == FAILURE) {
+              Toast.makeText(DemoModeActivity.this, R.string.grant_permissions_failure,
+                  LENGTH_LONG).show();
+              return;
+            }
+
+            grantPermissionsSuccess();
+          });
+        });
+      }
+    });
+    enter.setOnClickListener(v -> {
+      boolean needsWriteSystemSettingsPermission;
+      if (demoModeInitializer.getDemoModeSetting() != ENABLED) {
+        if (demoModeInitializer.hasWriteSecureSettingsPermission()) {
           demoModeInitializer.setDemoModeSetting(ENABLED);
-      GrantPermissionResult broadcastPermissionResult =
-          demoModeInitializer.grantBroadcastPermission();
+          needsWriteSystemSettingsPermission = false;
+        } else {
+          needsWriteSystemSettingsPermission = true;
+        }
+      } else {
+        needsWriteSystemSettingsPermission = false;
+      }
+      boolean needsDumpPermission = !demoModeInitializer.hasDumpPermission();
+      if (needsWriteSystemSettingsPermission || needsDumpPermission) {
+        suPermissionExecutor.execute(() -> {
+          GrantPermissionResult writeSecureSettingsResult;
+          if (needsWriteSystemSettingsPermission) {
+            writeSecureSettingsResult = demoModeInitializer.grantWriteSecureSettingsPermission();
+          } else {
+            writeSecureSettingsResult = SUCCESS;
+          }
+          GrantPermissionResult dumpResult;
+          if (needsDumpPermission) {
+            dumpResult = demoModeInitializer.grantDumpPermission();
+          } else {
+            dumpResult = SUCCESS;
+          }
 
-      runOnUiThread(() -> {
-        if (demoModeSettingResult == SU_NOT_FOUND || broadcastPermissionResult == SU_NOT_FOUND) {
-          Toast.makeText(DemoModeActivity.this, R.string.su_not_found, Toast.LENGTH_LONG).show();
-          return;
-        }
-        if (demoModeSettingResult == FAILURE || broadcastPermissionResult == FAILURE) {
-          Toast.makeText(DemoModeActivity.this, R.string.grant_permissions_failure,
-              Toast.LENGTH_LONG).show();
-          return;
-        }
-        onSuccess.run();
-      });
+          runOnUiThread(() -> {
+            if (writeSecureSettingsResult == SU_NOT_FOUND || dumpResult == SU_NOT_FOUND) {
+              Toast.makeText(DemoModeActivity.this, R.string.su_not_found, LENGTH_LONG).show();
+              return;
+            }
+            if (writeSecureSettingsResult == FAILURE || dumpResult == FAILURE) {
+              Toast.makeText(DemoModeActivity.this, R.string.grant_permissions_failure, LENGTH_LONG)
+                  .show();
+              return;
+            }
+
+            enterSuccess();
+          });
+        });
+      } else {
+        enterSuccess();
+      }
+    });
+    exit.setOnClickListener(v -> {
+      if (demoModeInitializer.hasDumpPermission()) {
+        exitSuccess();
+      } else {
+        suPermissionExecutor.execute(() -> {
+          GrantPermissionResult dumpResult = demoModeInitializer.grantDumpPermission();
+
+          runOnUiThread(() -> {
+            if (dumpResult == SU_NOT_FOUND) {
+              Toast.makeText(DemoModeActivity.this, R.string.su_not_found, LENGTH_LONG).show();
+              return;
+            }
+            if (dumpResult == FAILURE) {
+              Toast.makeText(DemoModeActivity.this, R.string.grant_permissions_failure, LENGTH_LONG)
+                  .show();
+              return;
+            }
+            exitSuccess();
+          });
+        });
+      }
     });
   }
 
-  void grantDumpPermission(Executor suPermissionExecutor,
-      DemoModeInitializer demoModeInitializer, Runnable onSuccess) {
-    suPermissionExecutor.execute(() -> {
-      GrantPermissionResult result = demoModeInitializer.grantBroadcastPermission();
+  void grantPermissionsSuccess() {
+    Toast.makeText(DemoModeActivity.this, R.string.grant_permissions_success, LENGTH_SHORT).show();
+  }
 
-      runOnUiThread(() -> {
-        if (result == SU_NOT_FOUND) {
-          Toast.makeText(DemoModeActivity.this, R.string.su_not_found, Toast.LENGTH_LONG).show();
-          return;
-        }
-        if (result == FAILURE) {
-          Toast.makeText(DemoModeActivity.this, R.string.grant_permissions_failure,
-              Toast.LENGTH_LONG).show();
-          return;
-        }
-        onSuccess.run();
-      });
-    });
+  void enterSuccess() {
+    sendBroadcast(new ClockBuilder().setTimeInHoursAndMinutes("1200").build());
+    sendBroadcast(new SystemIconsBuilder().cast(TRUE)
+        .zen(SystemIconsBuilder.ZenMode.IMPORTANT)
+        .mute(TRUE)
+        .speakerphone(TRUE)
+        .tty(TRUE)
+        .build());
+    sendBroadcast(new BatteryBuilder().level(100).plugged(FALSE).build());
+    sendBroadcast(new WifiBuilder().wifi(TRUE, 0).build());
+    sendBroadcast(new NetworkBuilder().mobile(true, NetworkBuilder.Datatype.LTE_PLUS, 0, 4)
+        .build());
+  }
+
+  void exitSuccess() {
+    sendBroadcast(DemoMode.buildExit());
   }
 }
