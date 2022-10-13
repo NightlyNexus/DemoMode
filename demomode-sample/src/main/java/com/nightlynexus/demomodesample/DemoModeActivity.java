@@ -19,15 +19,14 @@ import java.util.concurrent.Executors;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
-import static com.nightlynexus.demomode.DemoModePermissions.DemoModeSystemSetting.ENABLED;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.FAILURE;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.SUCCESS;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.SU_NOT_FOUND;
-import static com.nightlynexus.demomode.DemoModePermissions.getDemoModeSystemSetting;
 import static com.nightlynexus.demomode.DemoModePermissions.grantDumpPermission;
 import static com.nightlynexus.demomode.DemoModePermissions.grantWriteSecureSettingsPermission;
 import static com.nightlynexus.demomode.DemoModePermissions.hasDumpPermission;
 import static com.nightlynexus.demomode.DemoModePermissions.hasWriteSecureSettingsPermission;
+import static com.nightlynexus.demomode.DemoModePermissions.isDemoModeSystemSettingEnabled;
 import static com.nightlynexus.demomode.DemoModePermissions.setDemoModeSetting;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -83,9 +82,9 @@ public final class DemoModeActivity extends Activity {
     });
     enter.setOnClickListener(v -> {
       boolean needsWriteSystemSettingsPermission;
-      if (getDemoModeSystemSetting(this) != ENABLED) {
+      if (isDemoModeSystemSettingEnabled(this) != TRUE) {
         if (hasWriteSecureSettingsPermission(this)) {
-          setDemoModeSetting(this, ENABLED);
+          setDemoModeSetting(this, TRUE);
           needsWriteSystemSettingsPermission = false;
         } else {
           needsWriteSystemSettingsPermission = true;
