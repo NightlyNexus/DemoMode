@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+// https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/demomode/DemoMode.java
 @RequiresApi(23)
 public final class DemoMode {
   static final String ACTION_DEMO_MODE = "com.android.systemui.demo";

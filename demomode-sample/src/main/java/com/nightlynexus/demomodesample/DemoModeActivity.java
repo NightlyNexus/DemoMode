@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import androidx.annotation.RequiresApi;
 import com.nightlynexus.demomode.BatteryBuilder;
 import com.nightlynexus.demomode.ClockBuilder;
 import com.nightlynexus.demomode.DemoMode;
 import com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult;
-import com.nightlynexus.demomode.NetworkBuilder;
+import com.nightlynexus.demomode.MobileNetworkBuilder;
+import com.nightlynexus.demomode.NotificationsBuilder;
 import com.nightlynexus.demomode.SystemIconsBuilder;
-import com.nightlynexus.demomode.WifiBuilder;
+import com.nightlynexus.demomode.WifiNetworkBuilder;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -153,20 +155,23 @@ public final class DemoModeActivity extends Activity {
     Toast.makeText(DemoModeActivity.this, R.string.grant_permissions_success, LENGTH_SHORT).show();
   }
 
+  @RequiresApi(23)
   void enterSuccess() {
     sendBroadcast(new ClockBuilder().setTimeInHoursAndMinutes("1200").build());
-    sendBroadcast(new SystemIconsBuilder().cast(TRUE)
-        .zen(SystemIconsBuilder.ZenMode.IMPORTANT)
+    sendBroadcast(new SystemIconsBuilder()
+        .cast(TRUE)
         .mute(TRUE)
         .speakerphone(TRUE)
         .tty(TRUE)
         .build());
     sendBroadcast(new BatteryBuilder().level(100).plugged(FALSE).build());
-    sendBroadcast(new WifiBuilder().wifi(TRUE, 0).build());
-    sendBroadcast(new NetworkBuilder().mobile(true, NetworkBuilder.Datatype.LTE_PLUS, 0, 4)
+    sendBroadcast(new WifiNetworkBuilder().wifi(TRUE, 0, null, null).build());
+    sendBroadcast(new MobileNetworkBuilder().mobile(TRUE, MobileNetworkBuilder.DataType.LTE_PLUS, 0, FALSE, 4, null, null)
         .build());
+    sendBroadcast(new NotificationsBuilder().visible(FALSE).build());
   }
 
+  @RequiresApi(23)
   void exitSuccess() {
     sendBroadcast(DemoMode.buildExit());
   }

@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 
+// https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/policy/Clock.java
 @RequiresApi(23)
 public final class ClockBuilder {
-  private String millis;
-  private String hhmm;
+  String millis;
+  String hhmm;
 
   public ClockBuilder setTimeInMilliseconds(long millis) {
     this.millis = Long.toString(millis);
@@ -16,8 +17,11 @@ public final class ClockBuilder {
   }
 
   public ClockBuilder setTimeInHoursAndMinutes(String hhmm) {
-    if (hhmm == null || hhmm.length() != 4) {
-      throw new IllegalArgumentException("hhmm must be four digits or null. Actual: " + hhmm);
+    if (hhmm == null) {
+      throw new NullPointerException("hhmm == null");
+    }
+    if (hhmm.length() != 4) {
+      throw new IllegalArgumentException("hhmm must be a string of four digits. Actual: " + hhmm);
     }
     this.millis = null;
     this.hhmm = hhmm;
