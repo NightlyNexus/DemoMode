@@ -13,7 +13,7 @@ This library wraps Android’s Demo Mode controls in an understandable API for d
 Note that the system-signed DUMP permission is needed to send broadcasts to alter the Demo Mode state.
 <br/>Also, Demo Mode must be enabled in the system settings. This can be done in the system settings app. This library can set this system setting with `DemoModePermissions.setDemoModeSystemSettingEnabled(true)` but requires the system-signed WRITE_SECURE_SETTINGS permission to do so.
 
-To grant these system-signed permissions to an app via adb, run the following commands.
+To grant these system-signed permissions to an app via adb, run the following commands. Do not forget to add the permissions to the app’s manifest, as well.
 <br/>`adb shell pm grant <com.example.app> android.permission.DUMP`
 <br/>`adb shell pm grant <com.example.app> android.permission.WRITE_SECURE_SETTINGS`
 
