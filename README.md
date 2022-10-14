@@ -14,8 +14,8 @@ Note that the system-signed DUMP permission is needed to send broadcasts to alte
 <br/>Also, Demo Mode must be enabled in the system settings. This can be done in the system settings app. This library can set this system setting with `DemoModePermissions.setDemoModeSystemSettingEnabled(true)` but requires the system-signed WRITE_SECURE_SETTINGS permission to do so.
 
 To grant these system-signed permissions to an app via adb, run the following commands.
-<br/>`adb shell pm grant <com.example.app> android.permission.WRITE_SECURE_SETTINGS`
 <br/>`adb shell pm grant <com.example.app> android.permission.DUMP`
+<br/>`adb shell pm grant <com.example.app> android.permission.WRITE_SECURE_SETTINGS`
 
 Why?
 --------
