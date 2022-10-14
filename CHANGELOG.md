@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.4.0 *(2022-10-14)*
+----------------------------
+
+* Breaking API change: DemoModePermissions.isDemoModeSystemSettingEnabled is now DemoModePermissions.isDemoModeAllowed.
+* Breaking API change: DemoModePermissions.setDemoModeSystemSettingEnabled is now DemoModePermissions.setDemoModeAllowed.
+
 Version 0.3.0 *(2022-10-13)*
 ----------------------------
 
