@@ -43,7 +43,7 @@ public final class DemoModePermissions {
 
   /**
    * Get the Intent for going to the Demo Mode screen in the system settings. This is useful as an
-   * alternative to {@link #setDemoModeSystemSettingEnabled(Context, Boolean)} (which requires the
+   * alternative to {@link #setDemoModeAllowed(Context, Boolean)} (which requires the
    * WRITE_SECURE_SETTINGS permission) if the Demo Mode setting is disabled.
    *
    * @return The Intent for going to the Demo Mode screen in the system settings or null if no known
@@ -70,7 +70,7 @@ public final class DemoModePermissions {
    * disabled).
    */
   @WorkerThread
-  @Nullable public static Boolean isDemoModeSystemSettingEnabled(Context context) {
+  @Nullable public static Boolean isDemoModeAllowed(Context context) {
     ContentResolver resolver = context.getContentResolver();
     String setting = Settings.Global.getString(resolver, DEMO_MODE_ALLOWED);
     return setting == null ? null : setting.equals("0") ? FALSE : TRUE;
@@ -78,17 +78,17 @@ public final class DemoModePermissions {
 
   /**
    * Set the Demo Mode setting in the system settings. The Demo Mode setting must be enabled before
-   * Demo Mode can be turned on.
+   * Demo Mode can be turned on with a broadcast.
    *
-   * @param enabled null to set the Demo Mode system setting in its unset state (effectively
+   * @param allowed null to set the Demo Mode system setting in its unset state (effectively
    *                disabled).
    */
   @RequiresPermission(PERMISSION_WRITE_SECURE_SETTINGS)
   @WorkerThread
-  public static void setDemoModeSystemSettingEnabled(Context context, @Nullable Boolean enabled) {
+  public static void setDemoModeAllowed(Context context, @Nullable Boolean allowed) {
     ContentResolver resolver = context.getContentResolver();
     Settings.Global.putString(resolver, DEMO_MODE_ALLOWED,
-        enabled == null ? null : enabled ? "1" : "0");
+        allowed == null ? null : allowed ? "1" : "0");
   }
 
   /**

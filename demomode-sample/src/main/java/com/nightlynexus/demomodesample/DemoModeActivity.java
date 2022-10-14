@@ -26,8 +26,8 @@ import static com.nightlynexus.demomode.DemoModePermissions.grantDumpPermission;
 import static com.nightlynexus.demomode.DemoModePermissions.grantWriteSecureSettingsPermission;
 import static com.nightlynexus.demomode.DemoModePermissions.hasDumpPermission;
 import static com.nightlynexus.demomode.DemoModePermissions.hasWriteSecureSettingsPermission;
-import static com.nightlynexus.demomode.DemoModePermissions.isDemoModeSystemSettingEnabled;
-import static com.nightlynexus.demomode.DemoModePermissions.setDemoModeSystemSettingEnabled;
+import static com.nightlynexus.demomode.DemoModePermissions.isDemoModeAllowed;
+import static com.nightlynexus.demomode.DemoModePermissions.setDemoModeAllowed;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -82,9 +82,9 @@ public final class DemoModeActivity extends Activity {
     });
     enter.setOnClickListener(v -> {
       boolean needsWriteSystemSettingsPermission;
-      if (isDemoModeSystemSettingEnabled(this) != TRUE) {
+      if (isDemoModeAllowed(this) != TRUE) {
         if (hasWriteSecureSettingsPermission(this)) {
-          setDemoModeSystemSettingEnabled(this, TRUE);
+          setDemoModeAllowed(this, TRUE);
           needsWriteSystemSettingsPermission = false;
         } else {
           needsWriteSystemSettingsPermission = true;
