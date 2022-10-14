@@ -27,7 +27,7 @@ import static com.nightlynexus.demomode.DemoModePermissions.grantWriteSecureSett
 import static com.nightlynexus.demomode.DemoModePermissions.hasDumpPermission;
 import static com.nightlynexus.demomode.DemoModePermissions.hasWriteSecureSettingsPermission;
 import static com.nightlynexus.demomode.DemoModePermissions.isDemoModeSystemSettingEnabled;
-import static com.nightlynexus.demomode.DemoModePermissions.setDemoModeSetting;
+import static com.nightlynexus.demomode.DemoModePermissions.setDemoModeSystemSettingEnabled;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
@@ -84,7 +84,7 @@ public final class DemoModeActivity extends Activity {
       boolean needsWriteSystemSettingsPermission;
       if (isDemoModeSystemSettingEnabled(this) != TRUE) {
         if (hasWriteSecureSettingsPermission(this)) {
-          setDemoModeSetting(this, TRUE);
+          setDemoModeSystemSettingEnabled(this, TRUE);
           needsWriteSystemSettingsPermission = false;
         } else {
           needsWriteSystemSettingsPermission = true;
