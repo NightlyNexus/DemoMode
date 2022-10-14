@@ -23,7 +23,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @RequiresApi(23)
 public final class DemoModePermissions {
-  static final String SYSTEMUI_DEMO_ALLOWED = "sysui_demo_allowed";
+  static final String DEMO_MODE_ALLOWED = "sysui_demo_allowed";
+  static final String DEMO_MODE_ON = "sysui_tuner_demo_on";
   static final String PERMISSION_WRITE_SECURE_SETTINGS =
       "android.permission.WRITE_SECURE_SETTINGS";
   static final String PERMISSION_DUMP = "android.permission.DUMP";
@@ -42,8 +43,8 @@ public final class DemoModePermissions {
 
   /**
    * Get the Intent for going to the Demo Mode screen in the system settings. This is useful as an
-   * alternative to {@link #setDemoModeSetting} (which requires the WRITE_SECURE_SETTINGS
-   * permission) if the Demo Mode setting is disabled.
+   * alternative to {@link #setDemoModeSystemSettingEnabled(Context, Boolean)} (which requires the
+   * WRITE_SECURE_SETTINGS permission) if the Demo Mode setting is disabled.
    *
    * @return The Intent for going to the Demo Mode screen in the system settings or null if no known
    * Intent exists.
@@ -65,13 +66,13 @@ public final class DemoModePermissions {
    * Get the current setting for Demo Mode in the system settings. The Demo Mode setting must be
    * enabled before Demo Mode can be turned on with a broadcast.
    *
-   * @return null if and only if the demo mode system setting has never been set (effectively
+   * @return null if and only if the Demo Mode system setting has never been set (effectively
    * disabled).
    */
   @WorkerThread
   @Nullable public static Boolean isDemoModeSystemSettingEnabled(Context context) {
     ContentResolver resolver = context.getContentResolver();
-    String setting = Settings.Global.getString(resolver, SYSTEMUI_DEMO_ALLOWED);
+    String setting = Settings.Global.getString(resolver, DEMO_MODE_ALLOWED);
     return setting == null ? null : setting.equals("0") ? FALSE : TRUE;
   }
 
@@ -79,15 +80,40 @@ public final class DemoModePermissions {
    * Set the Demo Mode setting in the system settings. The Demo Mode setting must be enabled before
    * Demo Mode can be turned on.
    *
-   * @param enabled null to set the demo mode system setting in its unset state (effectively
+   * @param enabled null to set the Demo Mode system setting in its unset state (effectively
    *                disabled).
    */
   @RequiresPermission(PERMISSION_WRITE_SECURE_SETTINGS)
   @WorkerThread
-  public static void setDemoModeSetting(Context context, @Nullable Boolean enabled) {
+  public static void setDemoModeSystemSettingEnabled(Context context, @Nullable Boolean enabled) {
     ContentResolver resolver = context.getContentResolver();
-    Settings.Global.putString(resolver, SYSTEMUI_DEMO_ALLOWED,
+    Settings.Global.putString(resolver, DEMO_MODE_ALLOWED,
         enabled == null ? null : enabled ? "1" : "0");
+  }
+
+  /**
+   * Check if Demo Mode is on.
+   *
+   * @return null if and only if Demo Mode has never been turned on.
+   */
+  @WorkerThread
+  @Nullable public static Boolean isDemoModeOn(Context context) {
+    ContentResolver resolver = context.getContentResolver();
+    String setting = Settings.Global.getString(resolver, DEMO_MODE_ON);
+    return setting == null ? null : setting.equals("0") ? FALSE : TRUE;
+  }
+
+  /**
+   * Set Demo Mode on, off, or in its initial unset state. If the DUMP permission is granted, it's
+   * easier to use {@link DemoMode#buildEnter()} and {@link DemoMode#buildExit())} instead.
+   *
+   * @param on null to set Demo Mode to its initial unset state.
+   */
+  @RequiresPermission(PERMISSION_WRITE_SECURE_SETTINGS)
+  @WorkerThread
+  public static void setDemoModeOn(Context context, @Nullable Boolean on) {
+    ContentResolver resolver = context.getContentResolver();
+    Settings.Global.putString(resolver, DEMO_MODE_ON, on == null ? null : on ? "1" : "0");
   }
 
   /**
