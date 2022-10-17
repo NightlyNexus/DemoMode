@@ -12,6 +12,8 @@ import androidx.annotation.WorkerThread;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static android.Manifest.permission.DUMP;
+import static android.Manifest.permission.WRITE_SECURE_SETTINGS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.os.Build.VERSION.SDK_INT;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.FAILURE;
@@ -25,9 +27,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public final class DemoModePermissions {
   static final String DEMO_MODE_ALLOWED = "sysui_demo_allowed";
   static final String DEMO_MODE_ON = "sysui_tuner_demo_on";
-  static final String PERMISSION_WRITE_SECURE_SETTINGS =
-      "android.permission.WRITE_SECURE_SETTINGS";
-  static final String PERMISSION_DUMP = "android.permission.DUMP";
 
   /**
    * The result of an attempt to grant a system permission.
@@ -83,7 +82,7 @@ public final class DemoModePermissions {
    * @param allowed null to set the Demo Mode system setting in its unset state (effectively
    *                disabled).
    */
-  @RequiresPermission(PERMISSION_WRITE_SECURE_SETTINGS)
+  @RequiresPermission(WRITE_SECURE_SETTINGS)
   @WorkerThread
   public static void setDemoModeAllowed(Context context, @Nullable Boolean allowed) {
     ContentResolver resolver = context.getContentResolver();
@@ -109,7 +108,7 @@ public final class DemoModePermissions {
    *
    * @param on null to set Demo Mode to its initial unset state.
    */
-  @RequiresPermission(PERMISSION_WRITE_SECURE_SETTINGS)
+  @RequiresPermission(WRITE_SECURE_SETTINGS)
   @WorkerThread
   public static void setDemoModeOn(Context context, @Nullable Boolean on) {
     ContentResolver resolver = context.getContentResolver();
@@ -121,7 +120,7 @@ public final class DemoModePermissions {
    * Demo Mode on and off in the system settings is granted.
    */
   public static boolean hasWriteSecureSettingsPermission(Context context) {
-    return hasPermission(context, PERMISSION_WRITE_SECURE_SETTINGS);
+    return hasPermission(context, WRITE_SECURE_SETTINGS);
   }
 
   /**
@@ -131,7 +130,7 @@ public final class DemoModePermissions {
    */
   @WorkerThread
   public static GrantPermissionResult grantWriteSecureSettingsPermission(Context context) {
-    return grantPermission(context, PERMISSION_WRITE_SECURE_SETTINGS);
+    return grantPermission(context, WRITE_SECURE_SETTINGS);
   }
 
   /**
@@ -139,7 +138,7 @@ public final class DemoModePermissions {
    * to have an effect is granted.
    */
   public static boolean hasDumpPermission(Context context) {
-    return hasPermission(context, PERMISSION_DUMP);
+    return hasPermission(context, DUMP);
   }
 
   /**
@@ -149,7 +148,7 @@ public final class DemoModePermissions {
    */
   @WorkerThread
   public static GrantPermissionResult grantDumpPermission(Context context) {
-    return grantPermission(context, PERMISSION_DUMP);
+    return grantPermission(context, DUMP);
   }
 
   static boolean hasPermission(Context context, String permission) {
