@@ -188,7 +188,7 @@ public final class DemoModePermissions {
   @SuppressWarnings("deprecation")
   static boolean hasHandler(Context context, Intent intent) {
     PackageManager packageManager = context.getPackageManager();
-    if (SDK_INT > 33) {
+    if (SDK_INT >= 33) {
       return !packageManager.queryIntentActivities(
           intent, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL)).isEmpty();
     }
