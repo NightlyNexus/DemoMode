@@ -50,11 +50,11 @@ public final class DemoModePermissions {
    */
   @Nullable public static Intent demoModeSystemSettingsScreenIntent(Context context) {
     Intent demoMode = new Intent("com.android.settings.action.DEMO_MODE");
+    demoMode.setPackage("com.android.systemui");
     if (hasHandler(context, demoMode)) {
       return demoMode;
     }
     demoMode.setAction("com.android.settings.action.EXTRA_SETTINGS");
-    demoMode.setPackage("com.android.systemui");
     if (hasHandler(context, demoMode)) {
       return demoMode;
     }
