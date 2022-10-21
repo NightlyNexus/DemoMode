@@ -2,6 +2,7 @@ package com.nightlynexus.demomode;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -38,7 +39,7 @@ public class NetworkBuilder {
     return this;
   }
 
-  public final NetworkBuilder sims(@Nullable Integer sims) {
+  public final NetworkBuilder sims(@Nullable @IntRange(from = 1, to = 8) Integer sims) {
     if (sims == null) {
       this.sims = null;
     } else {

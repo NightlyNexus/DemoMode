@@ -1,6 +1,7 @@
 package com.nightlynexus.demomode;
 
 import android.content.Intent;
+import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -13,8 +14,9 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
   String ssid;
 
   /** -1 level for wifi state disconnected. **/
-  public WifiNetworkBuilder wifi(@Nullable Boolean wifi, @Nullable Integer level,
-      @Nullable DataActivity activity, @Nullable String ssid) {
+  public WifiNetworkBuilder wifi(@Nullable Boolean wifi,
+      @Nullable @IntRange(from = -1, to = 4) Integer level, @Nullable DataActivity activity,
+      @Nullable String ssid) {
     this.wifi = wifi == null ? null : wifi ? "show" : "";
     if (level == null) {
       this.level = null;

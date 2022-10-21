@@ -2,6 +2,7 @@ package com.nightlynexus.demomode;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -13,7 +14,7 @@ public final class BatteryBuilder {
   String powersave;
   String present;
 
-  public BatteryBuilder level(@Nullable Integer level) {
+  public BatteryBuilder level(@Nullable @IntRange(from = 0, to = 100) Integer level) {
     if (level == null) {
       this.level = null;
     } else {

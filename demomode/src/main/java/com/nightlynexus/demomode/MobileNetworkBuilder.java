@@ -1,6 +1,7 @@
 package com.nightlynexus.demomode;
 
 import android.content.Intent;
+import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -44,7 +45,8 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
 
   /** -1 level for network state disconnected. **/
   public MobileNetworkBuilder mobile(@Nullable Boolean mobile, @Nullable DataType dataType,
-      int slot, @Nullable Boolean roam, @Nullable Integer level, @Nullable Boolean inflate,
+      @IntRange(from = 0, to = 8) int slot, @Nullable Boolean roam,
+      @IntRange(from = -1, to = 4) @Nullable Integer level, @Nullable Boolean inflate,
       @Nullable DataActivity activity) {
     this.mobile = mobile == null ? null : mobile ? "show" : "";
     if (slot < 0 || slot > 8) {
