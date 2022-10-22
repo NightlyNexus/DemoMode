@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 0.4.0 *(2022-10-22)*
+----------------------------
+
+* Lots of breaking API changes.
+* Reworked the MobileNetworkBuilder and WifiNetworkBuilder APIs.
+* Fixed MobileNetworkBuilder.inflate and MobileNetworkBuilder.activity not being set without MobileNetworkBuilder.level being set.
+* Fixed MobileNetworkBuilder.roam always being set to on on SDK versions <26.
+* Renamed NetworkBuilder.nosim to NetworkBuilder.noSim.
+* Added IntRange annotations.
+* DemoModePermissions.demoModeSystemSettingsScreenIntent now always returns an Intent targeting the SystemUI package.
+
 Version 0.4.0 *(2022-10-14)*
 ----------------------------
 
