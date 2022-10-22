@@ -119,12 +119,6 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
           throw new IllegalArgumentException("level must be [-1, 4] or null. Actual: " + level);
       }
     }
-    this.inflate = inflate == null ? null : inflate ? "true" : "false";
-    // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/
-    if (activity != null && SDK_INT < 26) {
-      throw new IllegalArgumentException("activity cannot be specified on SDK levels <26.");
-    }
-    this.activity = activity == null ? null : activity.name;
     return this;
   }
 
