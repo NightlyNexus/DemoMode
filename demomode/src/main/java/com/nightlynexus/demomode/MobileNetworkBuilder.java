@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static java.lang.Boolean.FALSE;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
@@ -43,33 +44,55 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   String inflate;
   String activity;
 
-  // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1383
-  // There appears to be an off-by-one error (missing the -1) in SystemUI. There are only five
-  // levels and the disconnected state, so limit the level here.
-  /** -1 level for network state disconnected. **/
-  public MobileNetworkBuilder mobile(@Nullable Boolean mobile, @Nullable DataType dataType,
-      @IntRange(from = 0, to = 8) int slot, @Nullable Boolean roam,
-      @IntRange(from = -1, to = 4) @Nullable Integer level, @Nullable Boolean inflate,
-      @Nullable DataActivity activity) {
-    this.mobile = mobile == null ? null : mobile ? "show" : "";
-    if (slot < 0 || slot > 8) {
-      throw new IllegalArgumentException("slot must [0, 8]. Actual: " + slot);
-    }
-    datatype = dataType == null ? null : dataType.name;
-    this.slot = Integer.toString(slot);
-    // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/
-    if (SDK_INT >= 26) {
-      this.roam = roam == null ? null : roam ? "show" : "";
-    } else {
-      if (roam != null) {
-        if (dataType != null) {
-          throw new IllegalArgumentException("dataType and roam cannot both be specified on SDK levels <26.");
-        }
-        if (roam) {
-          datatype = "roam";
-        }
+  public MobileNetworkBuilder show(@Nullable Boolean show) {
+    if (show == null) {
+      if (datatype != null || slot != null || roam != null || level != null || inflate != null ||
+          activity != null) {
+        throw new IllegalStateException("Unset all set parameters.");
       }
     }
+    mobile = show == null ? null : show ? "show" : "";
+    return this;
+  }
+
+  public MobileNetworkBuilder dateType(@Nullable DataType dataType) {
+    // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/#F12
+    if (SDK_INT < 26 && roam != null) {
+      throw new IllegalStateException("dataType and roam cannot both be specified on SDK levels <26. Remove the roam parameter first.");
+    }
+    datatype = dataType == null ? null : dataType.name;
+    return this;
+  }
+
+  // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1341
+  // Slot defaults to 0.
+  public MobileNetworkBuilder slot(int slot) {
+    this.slot = Integer.toString(slot);
+    return this;
+  }
+
+  public MobileNetworkBuilder roam(@Nullable Boolean roam) {
+    // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/#F12
+    if (SDK_INT < 26) {
+      if (datatype != null) {
+        throw new IllegalStateException("dataType and roam cannot both be specified on SDK levels" +
+            " <26. Remove the dataType parameter first.");
+      }
+      if (roam == FALSE) {
+        throw new IllegalArgumentException("roam cannot be false on SDK levels <26.");
+      }
+    }
+    this.roam = roam == null ? null : roam ? "show" : "";
+    return this;
+  }
+
+  // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1383
+  // There appears to be an off-by-one error (missing the - 1) in SystemUI. There are only five
+  // levels and the disconnected state, so limit the level here.
+  /**
+   * @param level -1 for disconnected network state.
+   */
+  public MobileNetworkBuilder level(@IntRange(from = -1, to = 4) @Nullable Integer level) {
     if (level == null) {
       this.level = null;
     } else {
@@ -105,15 +128,55 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
+  public MobileNetworkBuilder inflate(@Nullable Boolean inflate) {
+    this.inflate = inflate == null ? null : inflate ? "true" : "false";
+    return this;
+  }
+
+  // https://android.googlesource.com/platform/frameworks/base/+/5c88ffb5072b96662b34cb8139151707f424318a%5E%21/#F9
+  @RequiresApi(26)
+  public MobileNetworkBuilder activity(@Nullable DataActivity activity) {
+    if (SDK_INT < 26) {
+      throw new IllegalStateException("activity cannot be specified on SDK levels <26.");
+    }
+    this.activity = activity == null ? null : activity.name;
+    return this;
+  }
+
   @Override public Intent build() {
+    if (mobile == null) {
+      if (datatype != null || slot != null || roam != null || level != null || inflate != null ||
+          activity != null) {
+        throw new IllegalStateException("Set the mobile parameter.");
+      }
+      return super.build();
+    }
     Intent result = super.build()
-        .putExtra("mobile", mobile)
-        .putExtra("datatype", datatype)
-        .putExtra("slot", slot);
-    // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1376
-    // containsKey check.
-    if (roam != null) {
-      result.putExtra("roam", roam);
+        .putExtra("mobile", mobile);
+    if (SDK_INT >= 26) {
+      result.putExtra("datatype", datatype);
+    } else {
+      if (roam != null) {
+        // Roam is never false.
+        if (datatype != null || roam.length() == 0) {
+          throw new AssertionError();
+        }
+        result.putExtra("datatype", "roam");
+      }
+    }
+    // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1341
+    // Slot defaults to 0.
+    if (slot == null) {
+      result.putExtra("slot", "0");
+    } else {
+      result.putExtra("slot", slot);
+    }
+    if (SDK_INT >= 26) {
+      // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1376
+      // containsKey check.
+      if (roam != null) {
+        result.putExtra("roam", roam);
+      }
     }
     result.putExtra("level", level);
     // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1386

@@ -5,6 +5,8 @@ import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import static android.os.Build.VERSION.SDK_INT;
+
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
 public final class WifiNetworkBuilder extends NetworkBuilder {
@@ -13,11 +15,20 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
   String activity;
   String ssid;
 
-  /** -1 level for wifi state disconnected. **/
-  public WifiNetworkBuilder wifi(@Nullable Boolean wifi,
-      @Nullable @IntRange(from = -1, to = 4) Integer level, @Nullable DataActivity activity,
-      @Nullable String ssid) {
-    this.wifi = wifi == null ? null : wifi ? "show" : "";
+  public WifiNetworkBuilder show(@Nullable Boolean show) {
+    if (show == null) {
+      if (level != null || activity != null || ssid != null) {
+        throw new IllegalStateException("Unset all set parameters.");
+      }
+    }
+    wifi = show == null ? null : show ? "show" : "";
+    return this;
+  }
+
+  /**
+   * @param level -1 for disconnected network state.
+   */
+  public WifiNetworkBuilder level(@IntRange(from = -1, to = 4) @Nullable Integer level) {
     if (level == null) {
       this.level = null;
     } else {
@@ -44,12 +55,31 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
           throw new IllegalArgumentException("level must be [-1, 4] or null. Actual: " + level);
       }
     }
+    return this;
+  }
+
+  // https://android.googlesource.com/platform/frameworks/base/+/5c88ffb5072b96662b34cb8139151707f424318a%5E%21/#F9
+  @RequiresApi(26)
+  public WifiNetworkBuilder activity(@Nullable DataActivity activity) {
+    if (SDK_INT < 26) {
+      throw new IllegalStateException("activity cannot be specified on SDK levels <26.");
+    }
     this.activity = activity == null ? null : activity.name;
+    return this;
+  }
+
+  public WifiNetworkBuilder ssid(@Nullable String ssid) {
     this.ssid = ssid;
     return this;
   }
 
   @Override public Intent build() {
+    if (wifi == null) {
+      if (level != null || activity != null || ssid != null) {
+        throw new IllegalStateException("Set the wifi parameter.");
+      }
+      return super.build();
+    }
     return super.build()
         .putExtra("wifi", wifi)
         .putExtra("level", level)
