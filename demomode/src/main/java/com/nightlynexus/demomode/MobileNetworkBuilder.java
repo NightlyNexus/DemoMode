@@ -44,13 +44,10 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   String inflate;
   String activity;
 
+  /**
+   * @param show null will cause all other parameters to be ignored.
+   */
   public MobileNetworkBuilder show(@Nullable Boolean show) {
-    if (show == null) {
-      if (datatype != null || slot != null || roam != null || level != null || inflate != null ||
-          activity != null) {
-        throw new IllegalStateException("Unset all set parameters.");
-      }
-    }
     mobile = show == null ? null : show ? "show" : "";
     return this;
   }
@@ -138,13 +135,6 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   }
 
   @Override public Intent build() {
-    if (mobile == null) {
-      if (datatype != null || slot != null || roam != null || level != null || inflate != null ||
-          activity != null) {
-        throw new IllegalStateException("Set the mobile parameter.");
-      }
-      return super.build();
-    }
     Intent result = super.build()
         .putExtra("mobile", mobile);
     if (SDK_INT >= 26) {
