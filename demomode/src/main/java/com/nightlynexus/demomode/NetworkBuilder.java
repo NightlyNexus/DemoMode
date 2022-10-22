@@ -51,8 +51,8 @@ public class NetworkBuilder {
     return this;
   }
 
-  public final NetworkBuilder nosim(@Nullable Boolean nosim) {
-    this.nosim = nosim == null ? null : nosim ? "show" : "";
+  public final NetworkBuilder noSim(@Nullable Boolean noSim) {
+    nosim = noSim == null ? null : noSim ? "show" : "";
     return this;
   }
 
