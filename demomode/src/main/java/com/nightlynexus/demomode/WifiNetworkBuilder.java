@@ -15,12 +15,10 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
   String activity;
   String ssid;
 
+  /**
+   * @param show null will cause all other parameters to be ignored.
+   */
   public WifiNetworkBuilder show(@Nullable Boolean show) {
-    if (show == null) {
-      if (level != null || activity != null || ssid != null) {
-        throw new IllegalStateException("Unset all set parameters.");
-      }
-    }
     wifi = show == null ? null : show ? "show" : "";
     return this;
   }
@@ -74,12 +72,6 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
   }
 
   @Override public Intent build() {
-    if (wifi == null) {
-      if (level != null || activity != null || ssid != null) {
-        throw new IllegalStateException("Set the wifi parameter.");
-      }
-      return super.build();
-    }
     return super.build()
         .putExtra("wifi", wifi)
         .putExtra("level", level)
