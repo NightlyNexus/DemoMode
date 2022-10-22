@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.5.1 *(2022-10-22)*
+----------------------------
+
+* Fixed MobileNetworkBuilder.dataType name.
+
 Version 0.5.0 *(2022-10-22)*
 ----------------------------
 
