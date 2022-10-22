@@ -1,7 +1,7 @@
 Change Log
 ==========
 
-Version 0.4.0 *(2022-10-22)*
+Version 0.5.0 *(2022-10-22)*
 ----------------------------
 
 * Lots of breaking API changes.
