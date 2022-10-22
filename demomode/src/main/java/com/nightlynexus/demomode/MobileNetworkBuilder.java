@@ -61,10 +61,14 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     if (SDK_INT >= 26) {
       this.roam = roam == null ? null : roam ? "show" : "";
     } else {
-      if (dataType != null && roam != null) {
-        throw new IllegalArgumentException("dataType and roam cannot both be specified on SDK levels <26.");
+      if (roam != null) {
+        if (dataType != null) {
+          throw new IllegalArgumentException("dataType and roam cannot both be specified on SDK levels <26.");
+        }
+        if (roam) {
+          datatype = "roam";
+        }
       }
-      datatype = "roam";
     }
     if (level == null) {
       this.level = null;
