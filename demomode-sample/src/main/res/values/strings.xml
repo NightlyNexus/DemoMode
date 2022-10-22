@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="label_application">Demo Mode Sample</string>
-  <string name="no_op">This feature is only for Mashmallow and above</string>
+  <string name="no_op">This feature is only for Marshmallow and above</string>
   <string name="grant_permissions">Grant Permissions</string>
   <string name="enter">Enter Demo Mode</string>
   <string name="exit">Exit Demo Mode</string>
