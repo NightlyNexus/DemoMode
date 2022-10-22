@@ -43,6 +43,9 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   String inflate;
   String activity;
 
+  // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1383
+  // There appears to be an off-by-one error (missing the -1) in SystemUI. There are only five
+  // levels and the disconnected state, so limit the level here.
   /** -1 level for network state disconnected. **/
   public MobileNetworkBuilder mobile(@Nullable Boolean mobile, @Nullable DataType dataType,
       @IntRange(from = 0, to = 8) int slot, @Nullable Boolean roam,
