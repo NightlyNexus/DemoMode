@@ -52,7 +52,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
-  public MobileNetworkBuilder dateType(@Nullable DataType dataType) {
+  public MobileNetworkBuilder dataType(@Nullable DataType dataType) {
     // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/#F12
     if (SDK_INT < 26 && roam != null) {
       throw new IllegalStateException("dataType and roam cannot both be specified on SDK levels <26. Remove the roam parameter first.");

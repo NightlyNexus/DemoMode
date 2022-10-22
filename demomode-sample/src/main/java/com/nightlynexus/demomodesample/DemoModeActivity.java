@@ -166,7 +166,7 @@ public final class DemoModeActivity extends Activity {
     sendBroadcast(new BatteryBuilder().level(100).plugged(FALSE).build());
     sendBroadcast(new WifiNetworkBuilder().show(TRUE).level(4).build());
     sendBroadcast(new MobileNetworkBuilder().show(TRUE)
-        .dateType(MobileNetworkBuilder.DataType.LTE_PLUS).level(-1).build());
+        .dataType(MobileNetworkBuilder.DataType.LTE_PLUS).level(-1).build());
     sendBroadcast(new NotificationsBuilder().visible(FALSE).build());
   }
 
