@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.5.2 *(2022-10-27)*
+----------------------------
+
+* Fixed missing IntRange on MobileNetworkBuilder.slot.
+
 Version 0.5.1 *(2022-10-22)*
 ----------------------------
 
