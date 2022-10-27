@@ -63,7 +63,10 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
 
   // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1341
   // Slot defaults to 0.
-  public MobileNetworkBuilder slot(int slot) {
+  public MobileNetworkBuilder slot(@IntRange(from = 0, to = 8) int slot) {
+    if (slot < 0 || slot > 8) {
+      throw new IllegalArgumentException("slot must [0, 8]. Actual: " + slot);
+    }
     this.slot = Integer.toString(slot);
     return this;
   }
