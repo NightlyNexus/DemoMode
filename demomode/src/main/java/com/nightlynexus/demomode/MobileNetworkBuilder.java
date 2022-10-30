@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static java.lang.Boolean.FALSE;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
@@ -26,6 +25,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     H_PLUS("h+"),
     LTE("lte"),
     LTE_PLUS("lte+"),
+    ROAM("roam"),
     DIS("dis"),
     NOT("not"),
     HIDE("");
@@ -58,8 +58,9 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
       throw new NullPointerException("dataType == null");
     }
     // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/#F12
-    if (SDK_INT < 26 && roam != null) {
-      throw new IllegalStateException("dataType and roam cannot both be specified on SDK levels <26. Remove the roam parameter first.");
+    if (SDK_INT >= 26 && dataType == DataType.ROAM) {
+      throw new IllegalArgumentException("roam cannot be set as a data type on SDK levels >=26. " +
+          "Use MobileNetworkBuilder.roam.");
     }
     datatype = dataType.name;
     return this;
@@ -78,13 +79,8 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   public MobileNetworkBuilder roam(@Nullable Boolean roam) {
     // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/#F12
     if (SDK_INT < 26) {
-      if (datatype != null) {
-        throw new IllegalStateException("dataType and roam cannot both be specified on SDK levels" +
-            " <26. Remove the dataType parameter first.");
-      }
-      if (roam == FALSE) {
-        throw new IllegalArgumentException("roam cannot be false on SDK levels <26.");
-      }
+      throw new IllegalStateException(
+          "roam cannot be set on SDK levels <26. Set roam as a data type.");
     }
     this.roam = roam == null ? null : roam ? "show" : "";
     return this;
@@ -146,18 +142,8 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
 
   @Override public Intent build() {
     Intent result = super.build()
-        .putExtra("mobile", mobile);
-    if (SDK_INT >= 26) {
-      result.putExtra("datatype", datatype);
-    } else {
-      if (roam != null) {
-        // Roam is never false.
-        if (datatype != null || roam.length() == 0) {
-          throw new AssertionError();
-        }
-        result.putExtra("datatype", "roam");
-      }
-    }
+        .putExtra("mobile", mobile)
+        .putExtra("datatype", datatype);
     // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1341
     // Slot defaults to 0.
     if (slot == null) {
