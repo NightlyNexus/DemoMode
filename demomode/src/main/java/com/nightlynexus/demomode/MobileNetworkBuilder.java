@@ -38,12 +38,12 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   }
 
   String mobile;
-  String datatype;
-  String slot;
+  DataType datatype; // Required.
+  String slot; // Required.
   String roam;
   String level;
   String inflate;
-  String activity;
+  DataActivity activity; // Required.
 
   /**
    * @param show null will cause all other parameters to be ignored.
@@ -62,12 +62,12 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
       throw new IllegalArgumentException("roam cannot be set as a data type on SDK levels >=26. " +
           "Use MobileNetworkBuilder.roam.");
     }
-    datatype = dataType.name;
+    datatype = dataType;
     return this;
   }
 
   // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1341
-  // Slot defaults to 0.
+  // Slot would default to 0, so we require it to be set explicitly.
   public MobileNetworkBuilder slot(@IntRange(from = 0, to = 8) int slot) {
     if (slot < 0 || slot > 8) {
       throw new IllegalArgumentException("slot must [0, 8]. Actual: " + slot);
@@ -136,21 +136,24 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     if (SDK_INT < 26) {
       throw new IllegalStateException("activity cannot be specified on SDK levels <26.");
     }
-    this.activity = activity.name;
+    this.activity = activity;
     return this;
   }
 
   @Override public Intent build() {
+    if (datatype == null) {
+      throw new IllegalStateException("Missing required data type.");
+    }
+    if (slot == null) {
+      throw new IllegalStateException("Missing required slot.");
+    }
+    if (activity == null) {
+      throw new IllegalStateException("Missing required activity.");
+    }
     Intent result = super.build()
         .putExtra("mobile", mobile)
-        .putExtra("datatype", datatype);
-    // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1341
-    // Slot defaults to 0.
-    if (slot == null) {
-      result.putExtra("slot", "0");
-    } else {
-      result.putExtra("slot", slot);
-    }
+        .putExtra("datatype", datatype.name)
+        .putExtra("slot", slot);
     if (SDK_INT >= 26) {
       // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1376
       // containsKey check.
@@ -164,6 +167,6 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     if (inflate != null) {
       result.putExtra("inflate", inflate);
     }
-    return result.putExtra("activity", activity);
+    return result.putExtra("activity", activity.name);
   }
 }

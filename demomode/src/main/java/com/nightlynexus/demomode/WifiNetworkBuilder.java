@@ -12,7 +12,7 @@ import static android.os.Build.VERSION.SDK_INT;
 public final class WifiNetworkBuilder extends NetworkBuilder {
   String wifi;
   String level;
-  String activity;
+  DataActivity activity; // Required.
   String ssid;
 
   /**
@@ -65,7 +65,7 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
     if (SDK_INT < 26) {
       throw new IllegalStateException("activity cannot be specified on SDK levels <26.");
     }
-    this.activity = activity.name;
+    this.activity = activity;
     return this;
   }
 
@@ -75,10 +75,13 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
   }
 
   @Override public Intent build() {
+    if (activity == null) {
+      throw new IllegalStateException("Missing required activity.");
+    }
     return super.build()
         .putExtra("wifi", wifi)
         .putExtra("level", level)
-        .putExtra("activity", activity)
+        .putExtra("activity", activity.name)
         .putExtra("ssid", ssid);
   }
 }
