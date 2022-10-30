@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.5.5 *(2022-10-30)*
+----------------------------
+
+* Replaced null DataType with DataType.NO_DATA.
+
 Version 0.5.4 *(2022-10-30)*
 ----------------------------
 
