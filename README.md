@@ -36,7 +36,7 @@ Download
 Gradle:
 
 ```groovy
-implementation 'com.nightlynexus.demomode:demomode:0.5.2'
+implementation 'com.nightlynexus.demomode:demomode:0.5.3'
 ```
 
 License

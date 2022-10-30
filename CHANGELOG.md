@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.5.3 *(2022-10-29)*
+----------------------------
+
+* Replaced null DataActivity with DataActivity.NONE.
+
 Version 0.5.2 *(2022-10-27)*
 ----------------------------
 
