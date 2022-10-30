@@ -129,11 +129,14 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
 
   // https://android.googlesource.com/platform/frameworks/base/+/5c88ffb5072b96662b34cb8139151707f424318a%5E%21/#F9
   @RequiresApi(26)
-  public MobileNetworkBuilder activity(@Nullable DataActivity activity) {
+  public MobileNetworkBuilder activity(DataActivity activity) {
+    if (activity == null) {
+      throw new NullPointerException("activity == null");
+    }
     if (SDK_INT < 26) {
       throw new IllegalStateException("activity cannot be specified on SDK levels <26.");
     }
-    this.activity = activity == null ? null : activity.name;
+    this.activity = activity.name;
     return this;
   }
 

@@ -12,11 +12,12 @@ public class NetworkBuilder {
   public enum DataActivity {
     INOUT("inout"),
     IN("in"),
-    OUT("out");
+    OUT("out"),
+    NONE(null);
 
-    final String name;
+    final @Nullable String name;
 
-    DataActivity(String name) {
+    DataActivity(@Nullable String name) {
       this.name = name;
     }
   }
