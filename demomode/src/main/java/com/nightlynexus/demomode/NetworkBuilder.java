@@ -10,10 +10,10 @@ import androidx.annotation.RequiresApi;
 @RequiresApi(23)
 public class NetworkBuilder {
   public enum DataActivity {
+    NONE(null),
     INOUT("inout"),
     IN("in"),
-    OUT("out"),
-    NONE(null);
+    OUT("out");
 
     final @Nullable String name;
 
