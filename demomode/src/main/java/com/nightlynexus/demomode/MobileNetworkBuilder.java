@@ -12,6 +12,7 @@ import static java.lang.Boolean.FALSE;
 @RequiresApi(23)
 public final class MobileNetworkBuilder extends NetworkBuilder {
   public enum DataType {
+    NO_DATA(null),
     ONE_X("1x"),
     THREE_G("3g"),
     FOUR_G("4g"),
@@ -29,9 +30,9 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     NOT("not"),
     HIDE("");
 
-    final String name;
+    final @Nullable String name;
 
-    DataType(String name) {
+    DataType(@Nullable String name) {
       this.name = name;
     }
   }
@@ -52,12 +53,15 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
-  public MobileNetworkBuilder dataType(@Nullable DataType dataType) {
+  public MobileNetworkBuilder dataType(DataType dataType) {
+    if (dataType == null) {
+      throw new NullPointerException("dataType == null");
+    }
     // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/#F12
     if (SDK_INT < 26 && roam != null) {
       throw new IllegalStateException("dataType and roam cannot both be specified on SDK levels <26. Remove the roam parameter first.");
     }
-    datatype = dataType == null ? null : dataType.name;
+    datatype = dataType.name;
     return this;
   }
 
