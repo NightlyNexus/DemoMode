@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.5.7 *(2022-10-30)*
+----------------------------
+
+* Parameters that have effects invariably are now required to be set explicitly.
+
 Version 0.5.6 *(2022-10-30)*
 ----------------------------
 
