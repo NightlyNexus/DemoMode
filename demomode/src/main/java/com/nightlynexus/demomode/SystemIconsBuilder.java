@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static com.nightlynexus.demomode.DemoMode.putString;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/phone/DemoStatusIcons.java
 // sync, eri, managed_profile, and secure are mentioned (here https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/tuner/DemoModeFragment.java#39 and here https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/tests/SystemUIDemoModeController/src/com/example/android/demomodecontroller/DemoModeController.java#245) but not implemented.
@@ -120,18 +121,18 @@ public final class SystemIconsBuilder {
     return this;
   }
 
-  public Intent build() {
+  public @Nullable Intent build() {
     Bundle extras = new Bundle(10);
-    extras.putString("volume", volume);
-    extras.putString("zen", zen);
-    extras.putString("bluetooth", bluetooth);
-    extras.putString("location", location);
-    extras.putString("alarm", alarm);
-    extras.putString("tty", tty);
-    extras.putString("mute", mute);
-    extras.putString("speakerphone", speakerphone);
-    extras.putString("cast", cast);
-    extras.putString("hotspot", hotspot);
+    putString(extras, "volume", volume);
+    putString(extras, "zen", zen);
+    putString(extras, "bluetooth", bluetooth);
+    putString(extras, "location", location);
+    putString(extras, "alarm", alarm);
+    putString(extras, "tty", tty);
+    putString(extras, "mute", mute);
+    putString(extras, "speakerphone", speakerphone);
+    putString(extras, "cast", cast);
+    putString(extras, "hotspot", hotspot);
     return DemoMode.build("status", extras);
   }
 }

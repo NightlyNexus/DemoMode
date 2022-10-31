@@ -15,23 +15,29 @@ public final class DemoMode {
    * broadcasts, as any other Demo Mode broadcast will implicitly enter Demo Mode.
    */
   public static Intent buildEnter() {
-    return build("enter", null);
+    return new Intent(ACTION_DEMO_MODE).putExtra("command", "enter");
   }
 
   /**
    * @return The Intent to broadcast for exiting Demo Mode.
    */
   public static Intent buildExit() {
-    return build("exit", null);
+    return new Intent(ACTION_DEMO_MODE).putExtra("command", "exit");
   }
 
-  static Intent build(String command, @Nullable Bundle extras) {
-    Intent intent = new Intent(ACTION_DEMO_MODE);
-    if (extras != null) {
-      intent.putExtras(extras); // Copies Bundle contents.
+  static @Nullable Intent build(String command, Bundle extras) {
+    if (extras.isEmpty()) {
+      return null;
     }
-    intent.putExtra("command", command);
-    return intent;
+    return new Intent(ACTION_DEMO_MODE)
+        .putExtras(extras)
+        .putExtra("command", command);
+  }
+
+  static void putString(Bundle bundle, String key, @Nullable String value) {
+    if (value != null) {
+      bundle.putString(key, value);
+    }
   }
 
   private DemoMode() {

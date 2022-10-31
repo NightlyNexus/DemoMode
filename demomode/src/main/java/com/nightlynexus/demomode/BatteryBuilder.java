@@ -6,6 +6,8 @@ import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import static com.nightlynexus.demomode.DemoMode.putString;
+
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/policy/BatteryControllerImpl.java
 @RequiresApi(23)
 public final class BatteryBuilder {
@@ -42,12 +44,12 @@ public final class BatteryBuilder {
     return this;
   }
 
-  public Intent build() {
+  public @Nullable Intent build() {
     Bundle extras = new Bundle(4);
-    extras.putString("level", level);
-    extras.putString("plugged", plugged);
-    extras.putString("powersave", powersave);
-    extras.putString("present", present);
+    putString(extras, "level", level);
+    putString(extras, "plugged", plugged);
+    putString(extras, "powersave", powersave);
+    putString(extras, "present", present);
     return DemoMode.build("battery", extras);
   }
 }

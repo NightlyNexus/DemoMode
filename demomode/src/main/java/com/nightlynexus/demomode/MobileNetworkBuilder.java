@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static com.nightlynexus.demomode.DemoMode.putString;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
@@ -141,6 +142,10 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   }
 
   @Override void addExtras(Bundle extras) {
+    if (mobile == null) {
+      // Nothing here will have an effect.
+      return;
+    }
     if (datatype == null) {
       throw new IllegalStateException("Missing required data type.");
     }
@@ -150,22 +155,18 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     if (activity == null) {
       throw new IllegalStateException("Missing required activity.");
     }
-    extras.putString("mobile", mobile);
-    extras.putString("datatype", datatype.name);
-    extras.putString("slot", slot);
+    putString(extras, "mobile", mobile);
+    putString(extras, "datatype", datatype.name);
+    putString(extras, "slot", slot);
     if (SDK_INT >= 26) {
       // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1376
-      // containsKey check.
-      if (roam != null) {
-        extras.putString("roam", roam);
-      }
+      // containsKey check. Do not insert null.
+      putString(extras, "roam", roam);
     }
-    extras.putString("level", level);
+    putString(extras, "level", level);
     // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1386
-    // containsKey check.
-    if (inflate != null) {
-      extras.putString("inflate", inflate);
-    }
-    extras.putString("activity", activity.name);
+    // containsKey check. Do not insert null.
+    putString(extras, "inflate", inflate);
+    putString(extras, "activity", activity.name);
   }
 }

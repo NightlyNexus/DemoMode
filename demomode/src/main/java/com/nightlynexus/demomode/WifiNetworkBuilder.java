@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static com.nightlynexus.demomode.DemoMode.putString;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
@@ -75,12 +76,16 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
   }
 
   @Override void addExtras(Bundle extras) {
+    if (wifi == null) {
+      // Nothing here will have an effect.
+      return;
+    }
     if (activity == null) {
       throw new IllegalStateException("Missing required activity.");
     }
-    extras.putString("wifi", wifi);
-    extras.putString("level", level);
-    extras.putString("activity", activity.name);
-    extras.putString("ssid", ssid);
+    putString(extras, "wifi", wifi);
+    putString(extras, "level", level);
+    putString(extras, "activity", activity.name);
+    putString(extras, "ssid", ssid);
   }
 }

@@ -6,6 +6,8 @@ import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import static com.nightlynexus.demomode.DemoMode.putString;
+
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
 public class NetworkBuilder {
@@ -65,13 +67,13 @@ public class NetworkBuilder {
   void addExtras(Bundle extras) {
   }
 
-  public final Intent build() {
+  public final @Nullable Intent build() {
     Bundle extras = new Bundle(5);
-    extras.putString("airplane", airplane);
-    extras.putString("fully", fully);
-    extras.putString("sims", sims);
-    extras.putString("nosim", nosim);
-    extras.putString("carriernetworkchange", carriernetworkchange);
+    putString(extras, "airplane", airplane);
+    putString(extras, "fully", fully);
+    putString(extras, "sims", sims);
+    putString(extras, "nosim", nosim);
+    putString(extras, "carriernetworkchange", carriernetworkchange);
     addExtras(extras);
     return DemoMode.build("network", extras);
   }
