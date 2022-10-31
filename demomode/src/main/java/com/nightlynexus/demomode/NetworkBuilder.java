@@ -62,13 +62,17 @@ public class NetworkBuilder {
     return this;
   }
 
-  public Intent build() {
+  void addExtras(Bundle extras) {
+  }
+
+  public final Intent build() {
     Bundle extras = new Bundle(5);
     extras.putString("airplane", airplane);
     extras.putString("fully", fully);
     extras.putString("sims", sims);
     extras.putString("nosim", nosim);
     extras.putString("carriernetworkchange", carriernetworkchange);
+    addExtras(extras);
     return DemoMode.build("network", extras);
   }
 }

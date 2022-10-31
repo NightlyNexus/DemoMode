@@ -1,6 +1,6 @@
 package com.nightlynexus.demomode;
 
-import android.content.Intent;
+import android.os.Bundle;
 import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -140,7 +140,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
-  @Override public Intent build() {
+  @Override void addExtras(Bundle extras) {
     if (datatype == null) {
       throw new IllegalStateException("Missing required data type.");
     }
@@ -150,23 +150,22 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     if (activity == null) {
       throw new IllegalStateException("Missing required activity.");
     }
-    Intent result = super.build()
-        .putExtra("mobile", mobile)
-        .putExtra("datatype", datatype.name)
-        .putExtra("slot", slot);
+    extras.putString("mobile", mobile);
+    extras.putString("datatype", datatype.name);
+    extras.putString("slot", slot);
     if (SDK_INT >= 26) {
       // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1376
       // containsKey check.
       if (roam != null) {
-        result.putExtra("roam", roam);
+        extras.putString("roam", roam);
       }
     }
-    result.putExtra("level", level);
+    extras.putString("level", level);
     // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1386
     // containsKey check.
     if (inflate != null) {
-      result.putExtra("inflate", inflate);
+      extras.putString("inflate", inflate);
     }
-    return result.putExtra("activity", activity.name);
+    extras.putString("activity", activity.name);
   }
 }

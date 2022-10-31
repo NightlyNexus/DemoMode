@@ -1,6 +1,6 @@
 package com.nightlynexus.demomode;
 
-import android.content.Intent;
+import android.os.Bundle;
 import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -74,14 +74,13 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
-  @Override public Intent build() {
+  @Override void addExtras(Bundle extras) {
     if (activity == null) {
       throw new IllegalStateException("Missing required activity.");
     }
-    return super.build()
-        .putExtra("wifi", wifi)
-        .putExtra("level", level)
-        .putExtra("activity", activity.name)
-        .putExtra("ssid", ssid);
+    extras.putString("wifi", wifi);
+    extras.putString("level", level);
+    extras.putString("activity", activity.name);
+    extras.putString("ssid", ssid);
   }
 }
