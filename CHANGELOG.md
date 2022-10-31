@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.6.0 *(2022-10-31)*
+----------------------------
+
+* build() now returns a null Intent when broadcasting the Intent would have no effect.
+
 Version 0.5.7 *(2022-10-30)*
 ----------------------------
 
