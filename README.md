@@ -9,6 +9,8 @@ See Demo Mode in action: [The Demo Mode Settings app](https://play.google.com/st
 <br/>
 <br/>
 
+--------
+
 Control Android’s Demo Mode from your app.
 
 This library wraps Android’s Demo Mode controls in an understandable API for debugging or screenshots.
