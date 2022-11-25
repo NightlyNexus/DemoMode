@@ -2,8 +2,8 @@ Demo Mode
 =====================
 
 See Demo Mode in action: [The Demo Mode Settings app](https://play.google.com/store/apps/details?id=com.nightlynexus.demomodesettings) uses every available Demo Mode modifier.
-<a href='https://play.google.com/store/apps/details?id=com.nightlynexus.demomodesettings'><img alt='Get Demo Mode Settings on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="300"/></a>
-<a href='https://play.google.com/store/apps/details?id=com.nightlynexus.demomodesettings'><img alt='Get Demo Mode Settings on Google Play' src='/images/play_icon.png' width="300"/></a>
+<a href='https://play.google.com/store/apps/details?id=com.nightlynexus.demomodesettings'><img alt='Get Demo Mode Settings on Google Play' src='/images/play_icon.png' width="30"/></a>
+<a href='https://play.google.com/store/apps/details?id=com.nightlynexus.demomodesettings'><img alt='Get Demo Mode Settings on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="30"/></a>
 <br/>
 <br/>
 
