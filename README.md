@@ -6,8 +6,6 @@ See Demo Mode in action: [The Demo Mode Settings app](https://play.google.com/st
 <br/>
 <a href='https://play.google.com/store/apps/details?id=com.nightlynexus.demomodesettings'><img alt='Get Demo Mode Settings on Google Play' src='/images/play_icon.png' height="150"/></a>
 <a href='https://play.google.com/store/apps/details?id=com.nightlynexus.demomodesettings'><img alt='Get Demo Mode Settings on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height="150"/></a>
-<br/>
-<br/>
 
 --------
 
