@@ -14,7 +14,7 @@
       android:allowBackup="true"
       android:label="@string/label_application"
       android:supportsRtl="true"
-      tools:ignore="GoogleAppIndexingWarning,MissingApplicationIcon">
+      tools:ignore="MissingApplicationIcon">
 
     <activity
         android:name=".DemoModeActivity"

@@ -1,12 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-  compileSdkVersion 33
+  namespace 'com.nightlynexus.demomodesample'
+
+  compileSdk 35
 
   defaultConfig {
-    applicationId "com.nightlynexus.demomodesample"
+    applicationId namespace
     minSdkVersion 17
-    targetSdkVersion 33
+    targetSdkVersion 35
     versionCode 1
     versionName "1.0"
   }
