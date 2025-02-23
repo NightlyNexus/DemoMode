@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import static android.Manifest.permission.DUMP;
 import static android.Manifest.permission.WRITE_SECURE_SETTINGS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static android.os.Build.VERSION.SDK_INT;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.FAILURE;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.SUCCESS;
 import static com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult.SU_NOT_FOUND;
@@ -48,14 +47,14 @@ public final class DemoModePermissions {
    * @return The Intent for going to the Demo Mode screen in the system settings or null if no known
    * Intent exists.
    */
-  @Nullable public static Intent demoModeSystemSettingsScreenIntent(Context context) {
+  @Nullable public static Intent demoModeSystemSettingsScreenIntent(PackageManager packageManager) {
     Intent demoMode = new Intent("com.android.settings.action.DEMO_MODE");
     demoMode.setPackage("com.android.systemui");
-    if (hasHandler(context, demoMode)) {
+    if (demoMode.resolveActivity(packageManager) != null) {
       return demoMode;
     }
     demoMode.setAction("com.android.settings.action.EXTRA_SETTINGS");
-    if (hasHandler(context, demoMode)) {
+    if (demoMode.resolveActivity(packageManager) != null) {
       return demoMode;
     }
     return null;
@@ -183,17 +182,6 @@ public final class DemoModePermissions {
     }
     process.destroy();
     return hasPermission(context, permission) ? SUCCESS : FAILURE;
-  }
-
-  @SuppressWarnings("deprecation")
-  static boolean hasHandler(Context context, Intent intent) {
-    PackageManager packageManager = context.getPackageManager();
-    if (SDK_INT >= 33) {
-      return !packageManager.queryIntentActivities(
-          intent, PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL)).isEmpty();
-    }
-    return !packageManager.queryIntentActivities(
-        intent, PackageManager.MATCH_ALL).isEmpty();
   }
 
   private DemoModePermissions() {

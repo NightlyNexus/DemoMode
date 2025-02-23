@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.nightlynexus.demomode"/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nightlynexus.demomode">
+
+  <!-- We don't really need to do this. Android seems to allow you to query this package without
+  this declaration. -->
+  <queries>
+    <package android:name="com.android.systemui" />
+  </queries>
+</manifest>
