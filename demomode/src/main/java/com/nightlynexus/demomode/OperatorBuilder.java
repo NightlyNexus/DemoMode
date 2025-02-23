@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static com.nightlynexus.demomode.DemoMode.putString;
+import static com.nightlynexus.demomode.DemoMode.putStringIfNotNull;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/OperatorNameViewController.java#170
 // Added in 28 (https://android.googlesource.com/platform/frameworks/base/+/21d1bf1eaf9aca894e86d38d59ebd797d0649a56%5E%21/).
@@ -29,7 +29,7 @@ public final class OperatorBuilder {
 
   public @Nullable Intent build() {
     Bundle extras = new Bundle(1);
-    putString(extras, "name", name);
+    putStringIfNotNull(extras, "name", name);
     return DemoMode.build("operator", extras);
   }
 }

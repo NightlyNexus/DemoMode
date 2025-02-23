@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static com.nightlynexus.demomode.DemoMode.putString;
+import static com.nightlynexus.demomode.DemoMode.putStringIfNotNull;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
@@ -83,9 +83,9 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
     if (activity == null) {
       throw new IllegalStateException("Missing required activity.");
     }
-    putString(extras, "wifi", wifi);
-    putString(extras, "level", level);
-    putString(extras, "activity", activity.name);
-    putString(extras, "ssid", ssid);
+    putStringIfNotNull(extras, "wifi", wifi);
+    putStringIfNotNull(extras, "level", level);
+    putStringIfNotNull(extras, "activity", activity.name);
+    putStringIfNotNull(extras, "ssid", ssid);
   }
 }

@@ -34,7 +34,7 @@ public final class DemoMode {
         .putExtra("command", command);
   }
 
-  static void putString(Bundle bundle, String key, @Nullable String value) {
+  static void putStringIfNotNull(Bundle bundle, String key, @Nullable String value) {
     if (value != null) {
       bundle.putString(key, value);
     }

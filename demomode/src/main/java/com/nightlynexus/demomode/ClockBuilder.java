@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import static com.nightlynexus.demomode.DemoMode.putString;
+import static com.nightlynexus.demomode.DemoMode.putStringIfNotNull;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/policy/Clock.java
 @RequiresApi(23)
@@ -39,8 +39,8 @@ public final class ClockBuilder {
 
   public @Nullable Intent build() {
     Bundle extras = new Bundle(2);
-    putString(extras, "millis", millis);
-    putString(extras, "hhmm", hhmm);
+    putStringIfNotNull(extras, "millis", millis);
+    putStringIfNotNull(extras, "hhmm", hhmm);
     return DemoMode.build("clock", extras);
   }
 }

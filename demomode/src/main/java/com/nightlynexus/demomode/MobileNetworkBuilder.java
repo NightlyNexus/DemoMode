@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static com.nightlynexus.demomode.DemoMode.putString;
+import static com.nightlynexus.demomode.DemoMode.putStringIfNotNull;
 
 // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java
 @RequiresApi(23)
@@ -155,18 +155,18 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     if (activity == null) {
       throw new IllegalStateException("Missing required activity.");
     }
-    putString(extras, "mobile", mobile);
-    putString(extras, "datatype", datatype.name);
-    putString(extras, "slot", slot);
+    putStringIfNotNull(extras, "mobile", mobile);
+    putStringIfNotNull(extras, "datatype", datatype.name);
+    putStringIfNotNull(extras, "slot", slot);
     if (SDK_INT >= 26) {
       // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1376
       // containsKey check. Do not insert null.
-      putString(extras, "roam", roam);
+      putStringIfNotNull(extras, "roam", roam);
     }
-    putString(extras, "level", level);
+    putStringIfNotNull(extras, "level", level);
     // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1386
     // containsKey check. Do not insert null.
-    putString(extras, "inflate", inflate);
-    putString(extras, "activity", activity.name);
+    putStringIfNotNull(extras, "inflate", inflate);
+    putStringIfNotNull(extras, "activity", activity.name);
   }
 }
