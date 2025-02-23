@@ -152,7 +152,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     if (slot == null) {
       throw new IllegalStateException("Missing required slot.");
     }
-    if (activity == null) {
+    if (SDK_INT >= 26 && activity == null) {
       throw new IllegalStateException("Missing required activity.");
     }
     putStringIfNotNull(extras, "mobile", mobile);
