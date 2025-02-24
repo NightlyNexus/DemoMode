@@ -1,7 +1,12 @@
 Change Log
 ==========
 
-Version 0.7.0 *(2025-02-23)*
+Version 0.7.0 *(2025-02-24)*
+----------------------------
+
+* Breaking API change: SatelliteNetworkBuilder must now set the show parameter.
+
+Version 0.7.0 *(2025-02-24)*
 ----------------------------
 
 * Breaking API change: DemoModePermissions.demoModeSystemSettingsScreenIntent now takes PackageManager as its parameter.
