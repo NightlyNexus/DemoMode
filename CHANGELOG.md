@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.7.0 *(2025-02-23)*
+----------------------------
+
+* Breaking API change: DemoModePermissions.demoModeSystemSettingsScreenIntent now takes PackageManager as its parameter.
+* Breaking API change: MobileNetworkBuilder now requires setting the network name via networkName(String). Consider using MobileNetworkBuilder.DEFAULT_NETWORK_NAME.
+* Added carrierid, networkname, slice, and ntn support in MobileNetworkBuilder.
+* Added satellite support with connection and level parameters in SatelliteNetworkBuilder.
+* Fixed SDK < 26 crashing trying to build network intents.
+
 Version 0.6.0 *(2022-10-31)*
 ----------------------------
 
