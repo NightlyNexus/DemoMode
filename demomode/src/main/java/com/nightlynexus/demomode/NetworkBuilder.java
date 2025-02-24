@@ -68,7 +68,7 @@ public class NetworkBuilder {
   }
 
   public final @Nullable Intent build() {
-    Bundle extras = new Bundle(5 + 7);
+    Bundle extras = new Bundle(5 + 11);
     putStringIfNotNull(extras, "airplane", airplane);
     putStringIfNotNull(extras, "fully", fully);
     putStringIfNotNull(extras, "sims", sims);

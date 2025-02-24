@@ -45,6 +45,10 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   String level;
   String inflate;
   DataActivity activity; // Required.
+  String carrierid;
+  String networkname;
+  String slice;
+  String ntn;
 
   /**
    * @param show null will cause all other parameters to be ignored.
@@ -144,6 +148,47 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
+  @RequiresApi(34)
+  public MobileNetworkBuilder carrierId(@Nullable Integer carrierId) {
+    if (SDK_INT < 34) {
+      throw new IllegalStateException("carrierId cannot be specified on SDK levels <34.");
+    }
+    if (carrierId == null) {
+      this.carrierid = null;
+    } else {
+      this.carrierid = Integer.toString(carrierId);
+    }
+    return this;
+  }
+
+  @RequiresApi(34)
+  public MobileNetworkBuilder networkName(@Nullable String networkName) {
+    if (SDK_INT < 34) {
+      throw new IllegalStateException("networkName cannot be specified on SDK levels <34.");
+    }
+    this.networkname = networkName;
+    return this;
+  }
+
+  @RequiresApi(34)
+  public MobileNetworkBuilder slice(@Nullable Boolean slice) {
+    if (SDK_INT < 34) {
+      throw new IllegalStateException("slice cannot be specified on SDK levels <34.");
+    }
+    this.slice = slice == null ? null : slice ? "true" : "false";
+    return this;
+  }
+
+  // ntn stands for non-terrestrial.
+  @RequiresApi(34)
+  public MobileNetworkBuilder ntn(@Nullable Boolean ntn) {
+    if (SDK_INT < 34) {
+      throw new IllegalStateException("ntn cannot be specified on SDK levels <34.");
+    }
+    this.ntn = ntn == null ? null : ntn ? "true" : "false";
+    return this;
+  }
+
   @Override void addExtras(Bundle extras) {
     if (mobile == null) {
       // Nothing here will have an effect.
@@ -171,5 +216,11 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     // containsKey check. Do not insert null.
     putStringIfNotNull(extras, "inflate", inflate);
     putStringIfNotNull(extras, "activity", activity.name);
+    putStringIfNotNull(extras, "carrierid", carrierid);
+    // https://android.googlesource.com/platform/frameworks/base/+/332641fc24cb79a58e658a25d5963f3059d66837/packages/SystemUI/src/com/android/systemui/statusbar/pipeline/mobile/data/repository/demo/DemoModeMobileConnectionDataSource.kt#78
+    // Will default to "demo mode" if null.
+    putStringIfNotNull(extras, "networkname", networkname);
+    putStringIfNotNull(extras, "slice", slice);
+    putStringIfNotNull(extras, "ntn", ntn);
   }
 }
