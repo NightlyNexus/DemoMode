@@ -10,6 +10,7 @@ import com.nightlynexus.demomode.ClockBuilder;
 import com.nightlynexus.demomode.DemoMode;
 import com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult;
 import com.nightlynexus.demomode.MobileNetworkBuilder;
+import com.nightlynexus.demomode.NetworkBuilder;
 import com.nightlynexus.demomode.NotificationsBuilder;
 import com.nightlynexus.demomode.SystemIconsBuilder;
 import com.nightlynexus.demomode.WifiNetworkBuilder;
@@ -164,9 +165,21 @@ public final class DemoModeActivity extends Activity {
         .tty(TRUE)
         .build());
     sendBroadcast(new BatteryBuilder().level(100).plugged(FALSE).build());
-    sendBroadcast(new WifiNetworkBuilder().show(TRUE).level(4).build());
-    sendBroadcast(new MobileNetworkBuilder().show(TRUE)
-        .dataType(MobileNetworkBuilder.DataType.LTE_PLUS).level(-1).build());
+    WifiNetworkBuilder wifiNetworkBuilder = new WifiNetworkBuilder()
+        .show(TRUE)
+        .level(4);
+    if (SDK_INT >= 26) {
+      wifiNetworkBuilder.activity(NetworkBuilder.DataActivity.INOUT);
+    }
+    sendBroadcast(wifiNetworkBuilder.build());
+    MobileNetworkBuilder mobileNetworkBuilder = new MobileNetworkBuilder().show(TRUE)
+        .dataType(MobileNetworkBuilder.DataType.LTE_PLUS)
+        .slot(0)
+        .level(0);
+    if (SDK_INT >= 26) {
+      mobileNetworkBuilder.activity(NetworkBuilder.DataActivity.INOUT);
+    }
+    sendBroadcast(mobileNetworkBuilder.build());
     sendBroadcast(new NotificationsBuilder().visible(FALSE).build());
   }
 
