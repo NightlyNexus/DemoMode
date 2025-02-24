@@ -24,7 +24,7 @@ public final class SatelliteNetworkBuilder extends NetworkBuilder {
     }
   }
 
-  String satellite;
+  String satellite; // Required
   Connection connection; // Required.
   String level; // Required.
 
@@ -77,8 +77,7 @@ public final class SatelliteNetworkBuilder extends NetworkBuilder {
 
   @Override void addExtras(Bundle extras) {
     if (satellite == null) {
-      // Nothing here will have an effect.
-      return;
+      throw new IllegalStateException("Missing required show. Consider using false.");
     }
     if (connection == null) {
       throw new IllegalStateException(

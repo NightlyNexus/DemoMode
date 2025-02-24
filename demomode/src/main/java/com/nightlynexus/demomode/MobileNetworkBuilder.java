@@ -83,6 +83,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
+  @RequiresApi(26)
   public MobileNetworkBuilder roam(@Nullable Boolean roam) {
     // https://android.googlesource.com/platform/frameworks/base/+/0f0de13c37082f9443e3f0c8cc413188ec66d3fe%5E%21/#F12
     if (SDK_INT < 26) {
@@ -202,18 +203,18 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     }
     if (datatype == null) {
       throw new IllegalStateException(
-          "Missing required data type. Consider using DataType.NO_DATA");
+          "Missing required data type. Consider using DataType.NO_DATA.");
     }
     if (slot == null) {
       throw new IllegalStateException("Missing required slot. Consider using 0.");
     }
     if (SDK_INT >= 26 && activity == null) {
       throw new IllegalStateException(
-          "Missing required activity. Consider using DataActivity.NONE");
+          "Missing required activity. Consider using DataActivity.NONE.");
     }
     if (SDK_INT >= 34 && networkname == null) {
       throw new IllegalStateException(
-          "Missing required network name. Consider using DEFAULT_NETWORK_NAME");
+          "Missing required network name. Consider using DEFAULT_NETWORK_NAME.");
     }
     putStringIfNotNull(extras, "mobile", mobile);
     putStringIfNotNull(extras, "datatype", datatype.name);

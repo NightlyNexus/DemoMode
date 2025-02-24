@@ -83,7 +83,7 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
     }
     if (SDK_INT >= 26 && activity == null) {
       throw new IllegalStateException(
-          "Missing required activity. Consider using DataActivity.NONE");
+          "Missing required activity. Consider using DataActivity.NONE.");
     }
     putStringIfNotNull(extras, "wifi", wifi);
     putStringIfNotNull(extras, "level", level);
