@@ -69,6 +69,8 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
 
   // https://android.googlesource.com/platform/frameworks/base/+/1291b83a2fb8ae8a095d50730f75013151f6ce3f/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/NetworkControllerImpl.java#1341
   // Slot would default to 0, so we require it to be set explicitly.
+  // TODO: On Android 15, possibly 14, too, slots does not seem to have a default of 0 and thus
+  //  could be nullable and not required.
   public MobileNetworkBuilder slot(@IntRange(from = 0, to = 8) int slot) {
     if (slot < 0 || slot > 8) {
       throw new IllegalArgumentException("slot must [0, 8]. Actual: " + slot);
@@ -91,6 +93,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   // There appears to be an off-by-one error (missing the - 1) in SystemUI. There are only five
   // levels and the disconnected state, so limit the level here.
   /**
+   * TODO: -1 crashes the system UI on Android 15, possibly Android 14, too.
    * @param level -1 for disconnected network state.
    */
   public MobileNetworkBuilder level(@IntRange(from = -1, to = 4) @Nullable Integer level) {

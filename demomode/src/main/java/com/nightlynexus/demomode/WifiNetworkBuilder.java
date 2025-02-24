@@ -25,6 +25,7 @@ public final class WifiNetworkBuilder extends NetworkBuilder {
   }
 
   /**
+   * TODO: -1 crashes the system UI on Android 15, possibly Android 14, too.
    * @param level -1 for disconnected network state.
    */
   public WifiNetworkBuilder level(@IntRange(from = -1, to = 4) @Nullable Integer level) {
