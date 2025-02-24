@@ -68,6 +68,8 @@ public class NetworkBuilder {
   }
 
   public final @Nullable Intent build() {
+    // 11 is the maximum additional parameters from the addExtras implementations of
+    // MobileNetworkBuilder, WifiNetworkBuilder, and SatelliteNetworkBuilder.
     Bundle extras = new Bundle(5 + 11);
     putStringIfNotNull(extras, "airplane", airplane);
     putStringIfNotNull(extras, "fully", fully);
