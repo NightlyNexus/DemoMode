@@ -81,10 +81,11 @@ public final class SatelliteNetworkBuilder extends NetworkBuilder {
       return;
     }
     if (connection == null) {
-      throw new IllegalStateException("Missing required connection.");
+      throw new IllegalStateException(
+          "Missing required connection. Consider using Connection.Unknown.");
     }
     if (level == null) {
-      throw new IllegalStateException("Missing required level.");
+      throw new IllegalStateException("Missing required level. Consider using 0.");
     }
     putStringIfNotNull(extras, "satellite", satellite);
     putStringIfNotNull(extras, "connection", connection.name);

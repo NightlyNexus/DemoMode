@@ -179,6 +179,9 @@ public final class DemoModeActivity extends Activity {
     if (SDK_INT >= 26) {
       mobileNetworkBuilder.activity(NetworkBuilder.DataActivity.INOUT);
     }
+    if (SDK_INT >= 34) {
+      mobileNetworkBuilder.networkName(MobileNetworkBuilder.DEFAULT_NETWORK_NAME);
+    }
     sendBroadcast(mobileNetworkBuilder.build());
     sendBroadcast(new NotificationsBuilder().visible(FALSE).build());
   }

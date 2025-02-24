@@ -46,7 +46,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
   String inflate;
   DataActivity activity; // Required.
   String carrierid;
-  String networkname;
+  String networkname; // Required.
   String slice;
   String ntn;
 
@@ -161,8 +161,14 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
+  // https://android.googlesource.com/platform/frameworks/base/+/332641fc24cb79a58e658a25d5963f3059d66837/packages/SystemUI/src/com/android/systemui/statusbar/pipeline/mobile/data/repository/demo/DemoModeMobileConnectionDataSource.kt#78
+  public static final String DEFAULT_NETWORK_NAME = "demo mode";
+
   @RequiresApi(34)
-  public MobileNetworkBuilder networkName(@Nullable String networkName) {
+  public MobileNetworkBuilder networkName(String networkName) {
+    if (networkName == null) {
+      throw new NullPointerException("networkName == null");
+    }
     if (SDK_INT < 34) {
       throw new IllegalStateException("networkName cannot be specified on SDK levels <34.");
     }
@@ -195,13 +201,19 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
       return;
     }
     if (datatype == null) {
-      throw new IllegalStateException("Missing required data type.");
+      throw new IllegalStateException(
+          "Missing required data type. Consider using DataType.NO_DATA");
     }
     if (slot == null) {
-      throw new IllegalStateException("Missing required slot.");
+      throw new IllegalStateException("Missing required slot. Consider using 0.");
     }
     if (SDK_INT >= 26 && activity == null) {
-      throw new IllegalStateException("Missing required activity.");
+      throw new IllegalStateException(
+          "Missing required activity. Consider using DataActivity.NONE");
+    }
+    if (SDK_INT >= 34 && networkname == null) {
+      throw new IllegalStateException(
+          "Missing required network name. Consider using DEFAULT_NETWORK_NAME");
     }
     putStringIfNotNull(extras, "mobile", mobile);
     putStringIfNotNull(extras, "datatype", datatype.name);
@@ -217,8 +229,6 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     putStringIfNotNull(extras, "inflate", inflate);
     putStringIfNotNull(extras, "activity", activity.name);
     putStringIfNotNull(extras, "carrierid", carrierid);
-    // https://android.googlesource.com/platform/frameworks/base/+/332641fc24cb79a58e658a25d5963f3059d66837/packages/SystemUI/src/com/android/systemui/statusbar/pipeline/mobile/data/repository/demo/DemoModeMobileConnectionDataSource.kt#78
-    // Will default to "demo mode" if null.
     putStringIfNotNull(extras, "networkname", networkname);
     putStringIfNotNull(extras, "slice", slice);
     putStringIfNotNull(extras, "ntn", ntn);
