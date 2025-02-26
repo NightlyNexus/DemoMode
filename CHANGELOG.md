@@ -1,7 +1,12 @@
 Change Log
 ==========
 
-Version 0.7.0 *(2025-02-24)*
+Version 0.8.1 *(2025-02-26)*
+----------------------------
+
+* Fixed SatelliteNetworkBuilder.show(false) crashing when building.
+
+Version 0.8.0 *(2025-02-24)*
 ----------------------------
 
 * Breaking API change: SatelliteNetworkBuilder must now set the show parameter.
