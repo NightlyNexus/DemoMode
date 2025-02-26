@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi;
 import com.nightlynexus.demomode.BatteryBuilder;
 import com.nightlynexus.demomode.ClockBuilder;
 import com.nightlynexus.demomode.DemoMode;
+import com.nightlynexus.demomode.DemoModePermissions;
 import com.nightlynexus.demomode.DemoModePermissions.GrantPermissionResult;
 import com.nightlynexus.demomode.MobileNetworkBuilder;
 import com.nightlynexus.demomode.NetworkBuilder;
@@ -157,6 +158,7 @@ public final class DemoModeActivity extends Activity {
 
   @RequiresApi(23)
   void enterSuccess() {
+    DemoModePermissions.setDemoModeOn(this, true);
     sendBroadcast(new ClockBuilder().setTimeInHoursAndMinutes("1200").build());
     sendBroadcast(new SystemIconsBuilder()
         .cast(TRUE)
@@ -189,5 +191,6 @@ public final class DemoModeActivity extends Activity {
   @RequiresApi(23)
   void exitSuccess() {
     sendBroadcast(DemoMode.buildExit());
+    DemoModePermissions.setDemoModeOn(this, false);
   }
 }
