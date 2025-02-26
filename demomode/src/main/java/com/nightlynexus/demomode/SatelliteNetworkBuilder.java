@@ -40,7 +40,7 @@ public final class SatelliteNetworkBuilder extends NetworkBuilder {
   public SatelliteNetworkBuilder show(boolean show) {
     // The unset input is the same as the hide input.
     // https://android.googlesource.com/platform/frameworks/base/+/332641fc24cb79a58e658a25d5963f3059d66837/packages/SystemUI/src/com/android/systemui/statusbar/pipeline/satellite/data/demo/DemoDeviceBasedSatelliteDataSource.kt#52
-    satellite = show ? "show" : null;
+    satellite = show ? "show" : "";
     return this;
   }
 
@@ -78,6 +78,10 @@ public final class SatelliteNetworkBuilder extends NetworkBuilder {
   @Override void addExtras(Bundle extras) {
     if (satellite == null) {
       throw new IllegalStateException("Missing required show. Consider using false.");
+    }
+    if (satellite.isEmpty()) {
+      // Nothing here will have an effect.
+      return;
     }
     if (connection == null) {
       throw new IllegalStateException(
