@@ -9,6 +9,7 @@ import static android.os.Build.VERSION.SDK_INT;
 import static com.nightlynexus.demomode.DemoMode.putStringIfNotNull;
 
 // https://android.googlesource.com/platform/frameworks/base/+/332641fc24cb79a58e658a25d5963f3059d66837/packages/SystemUI/src/com/android/systemui/statusbar/pipeline/satellite/data/demo/DemoDeviceBasedSatelliteDataSource.kt#52
+// Added in 35 (https://android.googlesource.com/platform/frameworks/base/+/cdcd587f9c1c3bc96ae1270fbfec08ea078ed8ce%5E!/#F7).
 @RequiresApi(35)
 public final class SatelliteNetworkBuilder extends NetworkBuilder {
   public enum Connection {

@@ -177,6 +177,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
+  // https://android.googlesource.com/platform/frameworks/base/+/502ec03596425a9e2da4dc767f880683d6c3b627%5E!/#F3
   @RequiresApi(34)
   public MobileNetworkBuilder slice(@Nullable Boolean slice) {
     if (SDK_INT < 34) {
@@ -186,6 +187,7 @@ public final class MobileNetworkBuilder extends NetworkBuilder {
     return this;
   }
 
+  // https://android.googlesource.com/platform/frameworks/base/+/0baea08403dc1eea252d69de8d70a080c807f5a9%5E!/#F2
   // ntn stands for non-terrestrial.
   @RequiresApi(34)
   public MobileNetworkBuilder ntn(@Nullable Boolean ntn) {
